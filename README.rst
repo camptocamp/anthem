@@ -1,5 +1,5 @@
 Anthem: make your Odoo scripts sing 🐜🎵
-======================================
+========================================
 
 This is WIP, nothing useful for now!
 
