@@ -10,3 +10,8 @@ def test_no_params_prints_usage():
         subprocess.check_output(['anthem'], stderr=subprocess.STDOUT)
     assert "usage" in e.value.output
     assert e.value.returncode == 2
+
+
+def test_one_param_calls_song():
+    result = subprocess.check_output(['anthem', 'anthem.sample_songs::empty'])
+    assert result == "I am empty\n"
