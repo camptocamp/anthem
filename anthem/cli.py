@@ -2,8 +2,10 @@
 # Copyright 2016 Camptocamp SA
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl-3.0.en.html)
 import argparse
+import code
 import importlib
 
+from anthem import __version__ as anthem_version
 import openerp
 from openerp.api import Environment
 
@@ -17,6 +19,12 @@ def main():
         'will import path.to.module and run function'
     )
     parser.add_argument(
+        '-i', '--interactive',
+        action='store_true',
+        help='after playing the song, open an interactive console with access '
+        'to ctx (the the Anthem context), much like running python -i'
+    )
+    parser.add_argument(
         'odoo-args',
         nargs=argparse.REMAINDER,
         help='command line arguments to be passed on to Odoo, like -c for a '
@@ -25,16 +33,36 @@ def main():
     )
     args = parser.parse_args()
     odoo_args = vars(args)['odoo-args']
-    run(odoo_args, args.target)
+    print(args)
+    run(odoo_args, args.target, args.interactive)
 
 
-def run(odoo_args, target):
+def banner():
+    b = (
+        'Welcome to the anthem version {} interactive console!\n'
+        '\n'
+        'You can use an anthem context as ctx. (ctx.env is an Odoo\n'
+        'environment). If you terminate your session with Ctrl-D,\n'
+        'the database cursor ctx.env.cr will be committed.\n'
+        'Otherwise if you exit() or you raise an exception, the cursor will\n'
+        'be closed without a commit.\n'
+    ).format(anthem_version)
+    return b
+
+
+def run(odoo_args, target, interactive):
     mod_name, func_name = target.split('::')
     module = importlib.import_module(mod_name)
     func = getattr(module, func_name)
 
     with Context(odoo_args) as ctx:
         func(ctx)
+        if interactive:
+            console = code.InteractiveConsole(locals={'ctx': ctx})
+            import rlcompleter  # noqa
+            import readline
+            readline.parse_and_bind("tab: complete")
+            console.interact(banner=banner())
         ctx.env.cr.commit()
 
 
