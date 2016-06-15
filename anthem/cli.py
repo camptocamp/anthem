@@ -24,29 +24,38 @@ def main():
         'the end of the arguments'
     )
     args = parser.parse_args()
-    env = build_odoo_env(vars(args)['odoo-args'])
-    run(env, args.target)
+    odoo_args = vars(args)['odoo-args']
+    run(odoo_args, args.target)
 
 
-def build_odoo_env(odoo_args):
-    openerp.tools.config.parse_config(odoo_args)
-    openerp.service.server.start(preload=[], stop=True)
-    dbname = openerp.tools.config['db_name']
-
-    registry = openerp.modules.registry.RegistryManager.get(dbname)
-    cr = registry.cursor()
-    uid = openerp.SUPERUSER_ID
-    Environment.reset()
-    context = Environment(cr, uid, {})['res.users'].context_get()
-    return Environment(cr, uid, context)
-
-
-def run(env, target):
+def run(odoo_args, target):
     mod_name, func_name = target.split('::')
     module = importlib.import_module(mod_name)
     func = getattr(module, func_name)
-    try:
-        func(env)
-        env.cr.commit()
-    finally:
-        env.cr.close()
+
+    with Context(odoo_args) as ctx:
+        func(ctx)
+        ctx.env.cr.commit()
+
+
+class Context(object):
+    def __init__(self, odoo_args):
+        self.env = self._build_odoo_env(odoo_args)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.env.cr.close()
+
+    def _build_odoo_env(self, odoo_args):
+        openerp.tools.config.parse_config(odoo_args)
+        openerp.service.server.start(preload=[], stop=True)
+        dbname = openerp.tools.config['db_name']
+
+        registry = openerp.modules.registry.RegistryManager.get(dbname)
+        cr = registry.cursor()
+        uid = openerp.SUPERUSER_ID
+        Environment.reset()
+        context = Environment(cr, uid, {})['res.users'].context_get()
+        return Environment(cr, uid, context)

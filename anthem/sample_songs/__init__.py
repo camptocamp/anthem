@@ -3,5 +3,5 @@
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl-3.0.en.html)
 
 
-def empty(env):
+def empty(ctx):
     print("I am empty")
