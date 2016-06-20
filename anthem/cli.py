@@ -51,11 +51,10 @@ def banner():
 
 
 def run(odoo_args, target, interactive):
-    mod_name, func_name = target.split('::')
-    module = importlib.import_module(mod_name)
-    func = getattr(module, func_name)
-
     with Context(odoo_args) as ctx:
+        mod_name, func_name = target.split('::')
+        module = importlib.import_module(mod_name)
+        func = getattr(module, func_name)
         func(ctx)
         if interactive:
             console = code.InteractiveConsole(locals={'ctx': ctx})
