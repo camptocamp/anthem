@@ -25,7 +25,7 @@ setup(
         'console_scripts': ['anthem = anthem.cli:main']
     },
     classifiers=(
-        'Development Status :: 1 - Planning',
+        'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'Natural Language :: English',
         'License :: OSI Approved :: '

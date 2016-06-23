@@ -1,8 +1,6 @@
 Anthem: make your Odoo scripts sing 🐜🎵
 ========================================
 
-This is WIP, nothing useful for now!
-
 .. image:: https://travis-ci.org/camptocamp/anthem.svg?branch=master
     :target: https://travis-ci.org/camptocamp/anthem
 
