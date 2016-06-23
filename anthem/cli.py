@@ -77,8 +77,13 @@ class Context(object):
 
     def _build_odoo_env(self, odoo_args):
         openerp.tools.config.parse_config(odoo_args)
-        openerp.service.server.start(preload=[], stop=True)
         dbname = openerp.tools.config['db_name']
+        if not dbname:
+            argparse.ArgumentParser().error(
+                "please provide a database name though Odoo options (either "
+                "-d or an Odoo configuration file)"
+            )
+        openerp.service.server.start(preload=[], stop=True)
 
         registry = openerp.modules.registry.RegistryManager.get(dbname)
         cr = registry.cursor()
