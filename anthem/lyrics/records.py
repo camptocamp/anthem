@@ -25,6 +25,6 @@ def create_or_update(ctx, model, xmlid, values):
     if record:
         record.update(values)
     else:
-        record = model.create(values)
+        record = ctx.env[model].create(values)
         add_xmlid(ctx, record, xmlid)
     return record
