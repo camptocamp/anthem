@@ -1,13 +1,20 @@
 # -*- coding: utf-8 -*-
 # Copyright 2016 Camptocamp SA
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl-3.0.en.html)
+
+from __future__ import print_function
+
 import argparse
 import code
 import importlib
 
+from contextlib import contextmanager
+
 from anthem import __version__ as anthem_version
 import openerp
 from openerp.api import Environment
+
+from .output import LogIndent
 
 
 def main():
@@ -68,6 +75,7 @@ def run(odoo_args, target, interactive):
 class Context(object):
     def __init__(self, odoo_args):
         self.env = self._build_odoo_env(odoo_args)
+        self._log = LogIndent()
 
     def __enter__(self):
         return self
@@ -91,3 +99,8 @@ class Context(object):
         Environment.reset()
         context = Environment(cr, uid, {})['res.users'].context_get()
         return Environment(cr, uid, context)
+
+    @contextmanager
+    def log(self, name, timing=True):
+        with self._log.display(name, timing=timing):
+            yield

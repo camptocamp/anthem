@@ -3,3 +3,6 @@
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl-3.0.en.html)
 
 __version__ = "0.1.3"
+
+# publish the decorator so we can use 'anthem.log'
+from output import log
