@@ -3,6 +3,48 @@
 Release History
 ---------------
 
+Unreleased
+++++++++++
+
+**Features**
+
+* Ability to log descriptions and timings in songs with the
+  context manager ``Context.log`` and the decorator ``anthem.log``.
+
+  ::
+
+    from anthem import log
+
+    @log
+    def setup_company(ctx):
+        """ Setup company """
+        # do stuff
+        with ctx.log('other stuff'):
+            # do other stuff
+
+    @log
+    def load_data(ctx):
+        """ Load data """
+        # load
+
+    @log
+    def main(ctx):
+        setup_company(ctx)
+        load_data(ctx)
+
+  If we run anthem on ``main``, we will get:
+
+  ::
+
+    running... main
+       running... Setup company
+          running... other stuff
+          other stuff: 0.850s
+       Setup company: 1.100s
+       running... Load data
+       Load data: 2.900s
+    main: 4.000s
+
 0.1.3 (2016-07-07)
 ++++++++++++++++++
 
