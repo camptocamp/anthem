@@ -6,6 +6,9 @@ Release History
 Unreleased
 ++++++++++
 
+0.2.0 (2016-07-22)
+++++++++++++++++++
+
 **Features**
 
 * Ability to log descriptions and timings in songs with the
