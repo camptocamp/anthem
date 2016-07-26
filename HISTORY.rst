@@ -6,6 +6,10 @@ Release History
 Unreleased
 ++++++++++
 
+**Features**
+
+- Add --quiet mode
+
 0.2.0 (2016-07-22)
 ++++++++++++++++++
 

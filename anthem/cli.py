@@ -32,6 +32,11 @@ def main():
         'to ctx (the the Anthem context), much like running python -i'
     )
     parser.add_argument(
+        '-q', '--quiet',
+        action='store_true',
+        help='Quiet the logs, which is sad for the songs.',
+    )
+    parser.add_argument(
         'odoo-args',
         nargs=argparse.REMAINDER,
         help='command line arguments to be passed on to Odoo, like -c for a '
@@ -39,9 +44,10 @@ def main():
         'the end of the arguments'
     )
     args = parser.parse_args()
-    odoo_args = vars(args)['odoo-args']
     print(args)
-    run(odoo_args, args.target, args.interactive)
+    odoo_args = vars(args)['odoo-args']
+    options = Options(interactive=args.interactive, quiet=args.quiet)
+    run(odoo_args, args.target, options)
 
 
 def banner():
@@ -57,13 +63,20 @@ def banner():
     return b
 
 
-def run(odoo_args, target, interactive):
-    with Context(odoo_args) as ctx:
+class Options(object):
+
+    def __init__(self, interactive=False, quiet=False):
+        self.interactive = interactive
+        self.quiet = quiet
+
+
+def run(odoo_args, target, options):
+    with Context(odoo_args, options) as ctx:
         mod_name, func_name = target.split('::')
         module = importlib.import_module(mod_name)
         func = getattr(module, func_name)
         func(ctx)
-        if interactive:
+        if options.interactive:
             console = code.InteractiveConsole(locals={'ctx': ctx})
             import rlcompleter  # noqa
             import readline
@@ -73,8 +86,9 @@ def run(odoo_args, target, interactive):
 
 
 class Context(object):
-    def __init__(self, odoo_args):
+    def __init__(self, odoo_args, options):
         self.env = self._build_odoo_env(odoo_args)
+        self.options = options
         self._log = LogIndent()
 
     def __enter__(self):
@@ -102,5 +116,8 @@ class Context(object):
 
     @contextmanager
     def log(self, name, timing=True):
-        with self._log.display(name, timing=timing):
+        if self.options.quiet:
             yield
+        else:
+            with self._log.display(name, timing=timing):
+                yield
