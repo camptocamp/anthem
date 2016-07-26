@@ -2,10 +2,20 @@
 # Copyright 2016 Camptocamp SA
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl-3.0.en.html)
 
+from __future__ import print_function
+
 import functools
+import sys
 import time
 
 from contextlib import contextmanager
+
+
+def safe_print(ustring, errors='replace', **kwargs):
+    """ Safely print a unicode string """
+    encoding = sys.stdout.encoding or 'utf-8'
+    bytestr = ustring.encode(encoding, errors=errors)
+    print(bytestr, **kwargs)
 
 
 class LogIndent(object):
@@ -15,22 +25,22 @@ class LogIndent(object):
 
     @contextmanager
     def display(self, name, timing=True):
-        self._print_indent('{}...'.format(name))
+        self._print_indent(u'{}...'.format(name))
         self.level += 1
         start = time.time()
         try:
             yield
         except:
             self.level -= 1
-            self._print_indent('{}: error'.format(name))
+            self._print_indent(u'{}: error'.format(name))
             raise
         end = time.time()
         self.level -= 1
         if timing:
-            self._print_indent("{}: {:.3f}s".format(name, end - start))
+            self._print_indent(u"{}: {:.3f}s".format(name, end - start))
 
     def _print_indent(self, message):
-        print("{}{}".format("    " * self.level, message))
+        safe_print(u"{}{}".format(u"    " * self.level, message))
 
 
 def log(func=None, name=None, timing=True):

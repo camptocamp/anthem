@@ -6,6 +6,10 @@ Release History
 Unreleased
 ++++++++++
 
+**Fixes**
+
+* Encode the logged strings to the default encoding or utf8
+
 0.2.0 (2016-07-22)
 ++++++++++++++++++
 
