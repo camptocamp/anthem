@@ -19,6 +19,10 @@ Unreleased
 
 - Add --quiet mode
 
+**Fixes**
+
+- Set openerp's loglevel to ERROR, its logs clutter anthem's own outputs
+
 0.2.0 (2016-07-22)
 ++++++++++++++++++
 

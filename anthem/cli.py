@@ -7,6 +7,7 @@ from __future__ import print_function
 import argparse
 import code
 import importlib
+import logging
 import signal
 
 from contextlib import contextmanager
@@ -106,6 +107,7 @@ class Context(object):
                 "please provide a database name though Odoo options (either "
                 "-d or an Odoo configuration file)"
             )
+        logging.getLogger('openerp').setLevel(logging.ERROR)
         openerp.service.server.start(preload=[], stop=True)
 
         # openerp.service.server.start() modifies the SIGINT signal by its own
