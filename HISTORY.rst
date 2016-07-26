@@ -10,6 +10,11 @@ Unreleased
 
 * Encode the logged strings to the default encoding or utf8
 
+**Fixes**
+
+* Allow to use Ctrl-c to stop anthem.
+
+
 0.2.0 (2016-07-22)
 ++++++++++++++++++
 
