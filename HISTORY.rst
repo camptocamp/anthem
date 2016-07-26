@@ -6,14 +6,19 @@ Release History
 Unreleased
 ++++++++++
 
-**Fixes**
+**Features**
 
-* Encode the logged strings to the default encoding or utf8
+**Bugfixes**
 
-**Fixes**
+**Improvements**
 
-* Allow to use Ctrl-c to stop anthem.
+**Documentation**
 
+**Build**
+
+
+0.3.0 (2016-07-26)
+++++++++++++++++++
 
 **Features**
 
@@ -21,6 +26,8 @@ Unreleased
 
 **Fixes**
 
+- Encode the logged strings to the default encoding or utf8
+- Allow to use Ctrl-c to stop anthem.
 - Set openerp's loglevel to ERROR, its logs clutter anthem's own outputs
 
 0.2.0 (2016-07-22)
