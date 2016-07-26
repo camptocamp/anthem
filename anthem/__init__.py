@@ -5,4 +5,4 @@
 __version__ = "0.2.0"
 
 # publish the decorator so we can use 'anthem.log'
-from output import log
+from output import log  # noqa
