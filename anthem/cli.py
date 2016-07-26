@@ -7,6 +7,7 @@ from __future__ import print_function
 import argparse
 import code
 import importlib
+import signal
 
 from contextlib import contextmanager
 
@@ -92,6 +93,11 @@ class Context(object):
                 "-d or an Odoo configuration file)"
             )
         openerp.service.server.start(preload=[], stop=True)
+
+        # openerp.service.server.start() modifies the SIGINT signal by its own
+        # one which in fact prevents us to stop anthem with Ctrl-c.
+        # Restore the default one.
+        signal.signal(signal.SIGINT, signal.default_int_handler)
 
         registry = openerp.modules.registry.RegistryManager.get(dbname)
         cr = registry.cursor()

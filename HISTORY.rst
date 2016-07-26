@@ -6,6 +6,11 @@ Release History
 Unreleased
 ++++++++++
 
+**Fixes**
+
+* Allow to use Ctrl-c to stop anthem.
+
+
 0.2.0 (2016-07-22)
 ++++++++++++++++++
 
