@@ -8,6 +8,8 @@ Unreleased
 
 **Features**
 
+- New lyrics: CSV loader from path or stream
+
 **Bugfixes**
 
 **Improvements**
