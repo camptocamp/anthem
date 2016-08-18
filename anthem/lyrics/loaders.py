@@ -5,7 +5,6 @@
 import csv
 
 from ..exceptions import AnthemError
-from ..output import safe_print
 
 
 def load_csv(ctx, model_name, path, dialect='excel', **fmtparams):
@@ -48,10 +47,10 @@ def load_csv_stream(ctx, model_name, data, dialect='excel', **fmtparams):
             messages = u'\n'.join(
                 u'- %s' % msg for msg in result['messages']
             )
-            safe_print(u"Failed to load CSV "
-                       u"in '%s'. Details:\n%s" %
-                       (model_name, messages))
+            ctx.log_line(u"Failed to load CSV "
+                         u"in '%s'. Details:\n%s" %
+                         (model_name, messages))
             raise AnthemError(u'Could not import CSV. See the logs')
         else:
-            safe_print(u"Imported %d records in '%s'" %
-                       (len(ids), model_name))
+            ctx.log_line(u"Imported %d records in '%s'" %
+                         (len(ids), model_name))

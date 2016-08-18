@@ -124,6 +124,9 @@ class Context(object):
         context = Environment(cr, uid, {})['res.users'].context_get()
         return Environment(cr, uid, context)
 
+    def log_line(self, message):
+        self._log.print_indent(message)
+
     @contextmanager
     def log(self, name, timing=True):
         if self.options.quiet:
