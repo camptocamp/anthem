@@ -91,3 +91,7 @@ ENV/
 # Rope project settings
 .ropeproject
 
+# testing with odoo
+odoo.tar.gz
+odoo-9.0
+odoo

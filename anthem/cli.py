@@ -46,7 +46,6 @@ def main():
         'the end of the arguments'
     )
     args = parser.parse_args()
-    print(args)
     odoo_args = vars(args)['odoo-args']
     options = Options(interactive=args.interactive, quiet=args.quiet)
     run(odoo_args, args.target, options)
@@ -67,9 +66,10 @@ def banner():
 
 class Options(object):
 
-    def __init__(self, interactive=False, quiet=False):
+    def __init__(self, interactive=False, quiet=False, test_mode=False):
         self.interactive = interactive
         self.quiet = quiet
+        self.test_mode = test_mode
 
 
 def run(odoo_args, target, options):
@@ -97,6 +97,8 @@ class Context(object):
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
+        if self.options.test_mode:
+            self.env.cr.rollback()
         self.env.cr.close()
 
     def _build_odoo_env(self, odoo_args):

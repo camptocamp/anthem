@@ -1,10 +1,10 @@
 .. :changelog:
 
 Release History
----------------
+===============
 
 Unreleased
-++++++++++
+----------
 
 **Features**
 
@@ -16,9 +16,11 @@ Unreleased
 
 **Build**
 
+- Finally green builds!
+
 
 0.3.0 (2016-07-26)
-++++++++++++++++++
+------------------
 
 **Features**
 
@@ -31,7 +33,7 @@ Unreleased
 - Set openerp's loglevel to ERROR, its logs clutter anthem's own outputs
 
 0.2.0 (2016-07-22)
-++++++++++++++++++
+------------------
 
 **Features**
 
@@ -73,24 +75,24 @@ Unreleased
     main: 4.000s
 
 0.1.3 (2016-07-07)
-++++++++++++++++++
+------------------
 
 **Fixes**
 
 - Correct lyric to create or update a record
 
 0.1.2 (2016-07-07)
-++++++++++++++++++
+------------------
 
 - Add a lyric to create a xmlid
 - Add a lyric to create or update a record
 
 0.1.1 (2016-06-23)
-++++++++++++++++++
+------------------
 
 - Fixed crash on non-editable install.
 
 0.1.0 (2016-06-23)
-++++++++++++++++++
+------------------
 
 Initial release.
