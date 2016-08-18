@@ -56,18 +56,48 @@ package with ``pip install -e`` or directly modify the ``PYTHONPATH``.
 In order to have your ``songs`` in the ``PYTHONPATH``, the better is to make a
 Python package out of them.
 
+Testing
+-------
+
+Dependencies
+~~~~~~~~~~~~
+
+To run the tests, you must have Postgresql running, with accesses for your user
+(or you will have to modify ``tests/config/odoo.cfg`` with your database
+username and password).
 
 Run the tests
--------------
+~~~~~~~~~~~~~
 
-To run ``anthem``'s tests, it is a good idea to to an *editable* install of it
-in a virtualenv, and then intall and run ``pytest`` as follows::
+To run ``anthem``'s tests, it is a good idea to do an *editable* install of it
+in a virtualenv, and then intall and run ``tox`` as follows::
 
-  % git clone https://github.com/camptocamp/anthem.git
+  $ git clone https://github.com/camptocamp/anthem.git
   Cloning into 'anthem'...
-  % cd anthem
-  % python2 -m virtualenv env
-  % source env/bin/activate
-  % pip install -e .
-  % pip install pytest
-  % py.test
+  $ cd anthem
+  $ python2 -m virtualenv env
+  $ source env/bin/activate
+  $ pip install -e .
+  $ pip install pytest invoke tox
+  $ tox
+
+Additional arguments will be passed to ``pytest``::
+
+  $ tox -e py27 -- -x tests/test_cli.py
+
+If you prefer to execute the tests directly with ``pytest``, you can run::
+
+  $ OPENERP_SERVER=tests/config/odoo.cfg py.test
+
+But before, you have to ensure to have the proper environment for the tests with::
+
+  $ invoke tests.prepare
+  $ invoke tests.createdb
+
+Those steps, automatically called when using ``tox``, will download the nightly
+release of Odoo and install it as a package, so tests can be run against it
+(and that's also why it is important to use a virtualenv!)
+
+When calling ``pytest``, you have to define the ``OPENERP_SERVER`` environment
+variable with the configuration file for the Odoo database that will be used
+for the tests.

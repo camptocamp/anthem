@@ -46,7 +46,6 @@ def main():
         'the end of the arguments'
     )
     args = parser.parse_args()
-    print(args)
     odoo_args = vars(args)['odoo-args']
     options = Options(interactive=args.interactive, quiet=args.quiet)
     run(odoo_args, args.target, options)
