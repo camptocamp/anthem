@@ -14,6 +14,8 @@ Unreleased
 
 **Improvements**
 
+- Add tests for the existing lyrics
+
 **Documentation**
 
 **Build**
