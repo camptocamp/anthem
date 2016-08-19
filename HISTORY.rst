@@ -8,16 +8,26 @@ Unreleased
 
 **Features**
 
-- New lyrics: CSV loader from path or stream
-- New ``ctx.log_line`` to print a line respecting the current indentation
-
 **Bugfixes**
 
 **Improvements**
 
-- Add tests for the existing lyrics
-
 **Documentation**
+
+**Build**
+
+
+0.4.0 (2016-08-19)
+------------------
+
+**Features**
+
+- New lyrics: CSV loaders from path or stream
+- New ``ctx.log_line`` to print a line respecting the current indentation
+
+**Improvements**
+
+- Add tests for the existing lyrics
 
 **Build**
 
