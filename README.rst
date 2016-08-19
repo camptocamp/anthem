@@ -31,6 +31,42 @@ argument.
       setup_company(ctx)
 
 
+Logs
+----
+
+A song can display some logs when executed with ``@anthem.log``,
+``Context.log`` and ``Context.log_line``.
+
+::
+
+  import anthem
+
+  @anthem.log
+  def setup_company(ctx):
+     """ Setting up company """
+     company = ctx.env.ref('base.main_company')
+     with ctx.log('Changing name'):
+         company.name = 'My Company'
+         ctx.log_line('Name changed')
+     with ctx.log('Loading a logo'):
+         company.logo = b64encode(LOGO_CONTENT)
+         ctx.log_line('Logo changed')
+
+
+The decorator on the function will display the first line of the docstring.
+Both the decorator and the context manager will show the timing of the
+execution. The upper example gives::
+
+  Setting up company...
+      Changing name...
+          Name changed
+      Changing name: 0.0150s
+      Loading a logo...
+          Logo changed
+      Loading a logo: 0.100s
+  Setting up company: 0.300s
+
+
 Execute your songs
 ------------------
 
