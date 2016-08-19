@@ -25,21 +25,21 @@ class LogIndent(object):
 
     @contextmanager
     def display(self, name, timing=True):
-        self._print_indent(u'{}...'.format(name))
+        self.print_indent(u'{}...'.format(name))
         self.level += 1
         start = time.time()
         try:
             yield
         except:
             self.level -= 1
-            self._print_indent(u'{}: error'.format(name))
+            self.print_indent(u'{}: error'.format(name))
             raise
         end = time.time()
         self.level -= 1
         if timing:
-            self._print_indent(u"{}: {:.3f}s".format(name, end - start))
+            self.print_indent(u"{}: {:.3f}s".format(name, end - start))
 
-    def _print_indent(self, message):
+    def print_indent(self, message):
         safe_print(u"{}{}".format(u"    " * self.level, message))
 
 

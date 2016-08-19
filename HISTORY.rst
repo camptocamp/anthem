@@ -9,6 +9,7 @@ Unreleased
 **Features**
 
 - New lyrics: CSV loader from path or stream
+- New ``ctx.log_line`` to print a line respecting the current indentation
 
 **Bugfixes**
 
