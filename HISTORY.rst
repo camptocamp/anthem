@@ -10,6 +10,8 @@ Unreleased
 
 **Bugfixes**
 
+- 'records.add_xmlid' lyrics do no longer fail when it already exists
+
 **Improvements**
 
 **Documentation**

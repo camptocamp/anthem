@@ -5,6 +5,12 @@
 
 def add_xmlid(ctx, record, xmlid, noupdate=False):
     """ Add a XMLID on an existing record """
+    try:
+        ref_id, __, __ = ctx.env['ir.model.data'].xmlid_lookup(xmlid)
+    except ValueError:
+        pass  # does not exist, we'll create a new one
+    else:
+        return ctx.env['ir.model.data'].browse(ref_id)
     if '.' in xmlid:
         module, name = xmlid.split('.')
     else:
