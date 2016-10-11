@@ -11,8 +11,10 @@ def test_add_xmlid():
         env = ctx.env
         record = env['res.partner'].create({'name': 'test'})
         assert not record.get_metadata()[0]['xmlid']
-        add_xmlid(ctx, record, 'test.add_xmlid')
+        ref1 = add_xmlid(ctx, record, 'test.add_xmlid')
         assert record.get_metadata()[0]['xmlid'] == 'test.add_xmlid'
+        ref2 = add_xmlid(ctx, record, 'test.add_xmlid')
+        assert ref1 == ref2
 
 
 def test_create_or_update():
