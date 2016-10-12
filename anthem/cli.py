@@ -13,8 +13,16 @@ import signal
 from contextlib import contextmanager
 
 from anthem import __version__ as anthem_version
-import openerp
-from openerp.api import Environment
+try:
+    import odoo
+    from odoo.api import Environment
+    odoo_logger = 'odoo'
+except ImportError:
+    # Odoo < 10.0
+    import openerp as odoo  # noqa
+    from openerp.api import Environment  # noqa
+    odoo_logger = 'openerp'
+
 
 from .output import LogIndent
 
@@ -102,24 +110,24 @@ class Context(object):
         self.env.cr.close()
 
     def _build_odoo_env(self, odoo_args):
-        openerp.tools.config.parse_config(odoo_args)
-        dbname = openerp.tools.config['db_name']
+        odoo.tools.config.parse_config(odoo_args)
+        dbname = odoo.tools.config['db_name']
         if not dbname:
             argparse.ArgumentParser().error(
                 "please provide a database name though Odoo options (either "
                 "-d or an Odoo configuration file)"
             )
-        logging.getLogger('openerp').setLevel(logging.ERROR)
-        openerp.service.server.start(preload=[], stop=True)
+        logging.getLogger(odoo_logger).setLevel(logging.ERROR)
+        odoo.service.server.start(preload=[], stop=True)
 
-        # openerp.service.server.start() modifies the SIGINT signal by its own
+        # odoo.service.server.start() modifies the SIGINT signal by its own
         # one which in fact prevents us to stop anthem with Ctrl-c.
         # Restore the default one.
         signal.signal(signal.SIGINT, signal.default_int_handler)
 
-        registry = openerp.modules.registry.RegistryManager.get(dbname)
+        registry = odoo.modules.registry.RegistryManager.get(dbname)
         cr = registry.cursor()
-        uid = openerp.SUPERUSER_ID
+        uid = odoo.SUPERUSER_ID
         Environment.reset()
         context = Environment(cr, uid, {})['res.users'].context_get()
         return Environment(cr, uid, context)

@@ -8,6 +8,8 @@ Unreleased
 
 **Features**
 
+- Support Odoo 10
+
 **Bugfixes**
 
 - 'records.add_xmlid' lyrics do no longer fail when it already exists
