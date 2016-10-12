@@ -5,7 +5,6 @@
 from __future__ import print_function
 
 import os
-import tempfile
 
 from distutils.version import LooseVersion
 from invoke import task, Collection
@@ -45,11 +44,12 @@ def tests_prepare(ctx, version):
 @task
 def tests_createdb(ctx, version):
     assert_version(version)
-    print('Installing the database')
+    db = dbname(version)
+    print('Installing database {}'.format(db))
     if is_below_odoo_10(version):
-        ctx.run('odoo.py -d {} --stop-after-init'.format(dbname(version)))
+        ctx.run('odoo.py -d {} --workers=0 --stop-after-init'.format(db))
     else:
-        ctx.run('odoo -d {} --stop-after-init'.format(dbname(version)))
+        ctx.run('odoo -d {} --workers=0 --stop-after-init'.format(db))
 
 
 @task
