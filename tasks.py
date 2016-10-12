@@ -81,7 +81,7 @@ def tests_prepare_config(ctx, version, source, target):
         if line.startswith('db_name'):
             config_content[idx] = 'db_name = {}\n'.format(dbname(version))
 
-    with open(target, 'w+') as config_file:
+    with open(target, 'w') as config_file:
         for line in config_content:
             config_file.write(line)
 
