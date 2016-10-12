@@ -4,9 +4,10 @@
 
 from __future__ import print_function
 
-import imp
 import os
+import tempfile
 
+from distutils.version import LooseVersion
 from invoke import task, Collection
 
 ns = Collection()
@@ -16,45 +17,75 @@ ns.add_collection(tests)
 ODOO_URL = 'https://github.com/odoo/odoo/archive/{}.tar.gz'
 
 
-@task
-def tests_prepare(ctx, version='9.0'):
-    try:
-        imp.find_module('openerp')
-    except ImportError:
-        if not os.path.exists('odoo'):
-            url = ODOO_URL.format(version)
-            print('Getting {}'.format(url))
-            ctx.run('wget -nv -c -O odoo.tar.gz {}'.format(url))
-            ctx.run('tar xfz odoo.tar.gz')
-            ctx.run('rm -f odoo.tar.gz')
-            ctx.run('mv odoo-{} odoo'.format(version))
-        print('Installing odoo')
-        ctx.run('pip install -e odoo')
+def is_below_odoo_10(version):
+    return LooseVersion(version) < LooseVersion('10.0')
+
+
+def dbname(version):
+    return 'anthem-test-db-{}'.format(version.replace('.', '_'))
+
+
+def assert_version(version):
+    assert version in ('10.0', '9.0')
 
 
 @task
-def tests_createdb(ctx):
+def tests_prepare(ctx, version):
+    assert_version(version)
+    if not os.path.exists('odoo-{}'.format(version)):
+        url = ODOO_URL.format(version)
+        print('Getting {}'.format(url))
+        ctx.run('wget -nv -c -O odoo.tar.gz {}'.format(url))
+        ctx.run('tar xfz odoo.tar.gz')
+        ctx.run('rm -f odoo.tar.gz')
+    print('Installing odoo')
+    ctx.run('pip install -e odoo-{} -q'.format(version))
+
+
+@task
+def tests_createdb(ctx, version):
+    assert_version(version)
     print('Installing the database')
-    ctx.run('odoo.py --stop-after-init')
+    if is_below_odoo_10(version):
+        ctx.run('odoo.py -d {} --stop-after-init'.format(dbname(version)))
+    else:
+        ctx.run('odoo -d {} --stop-after-init'.format(dbname(version)))
 
 
 @task
-def tests_dropdb(ctx):
+def tests_dropdb(ctx, version):
+    assert_version(version)
     print('Dropping the database')
     try:
-        import openerp
-        openerp.tools.config.parse_config(None)
-        openerp.service.db.exp_drop('anthem-testdb')
+        if is_below_odoo_10(version):
+            import openerp as odoo
+        else:
+            import odoo  # noqa
+        odoo.tools.config.parse_config(None)
+        odoo.service.db.exp_drop(dbname(version))
     except ImportError:
-        print('Could not import openerp')
+        print('Could not import odoo')
         exit(1)
+
+
+@task
+def tests_prepare_config(ctx, version, source, target):
+    assert_version(version)
+    assert source and target
+    with open(source, 'rU') as source_file:
+        config_content = source_file.readlines()
+
+    for idx, line in enumerate(config_content):
+        if line.startswith('db_name'):
+            config_content[idx] = 'db_name = {}\n'.format(dbname(version))
+
+    with open(target, 'w+') as config_file:
+        for line in config_content:
+            config_file.write(line)
 
 
 @task(default=True)
 def tests_run(ctx):
-    path = os.path.dirname(os.path.abspath(__file__))
-    config_path = os.path.join(path, 'tests', 'config', 'odoo.cfg')
-    os.environ.setdefault('OPENERP_SERVER', config_path)
     ctx.run('tox', pty=True)
 
 
@@ -62,3 +93,4 @@ tests.add_task(tests_run, 'run')
 tests.add_task(tests_createdb, 'createdb')
 tests.add_task(tests_dropdb, 'dropdb')
 tests.add_task(tests_prepare, 'prepare')
+tests.add_task(tests_prepare_config, 'prepare_config')
