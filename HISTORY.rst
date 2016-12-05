@@ -23,6 +23,7 @@ Unreleased
 **Features**
 
 - Support Odoo 10
+- Allow to specify the encoding of an imported file, default is utf8
 
 **Bugfixes**
 

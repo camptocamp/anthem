@@ -2,6 +2,7 @@
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
+import codecs
 import csv
 
 from ..exceptions import AnthemError
@@ -24,7 +25,16 @@ def load_csv(ctx, model_name, path, dialect='excel', **fmtparams):
         load_csv_stream(ctx, model_name, data, dialect=dialect, **fmtparams)
 
 
-def load_csv_stream(ctx, model_name, data, dialect='excel', **fmtparams):
+def csv_unireader(f, encoding="utf-8", **fmtparams):
+    data = csv.reader(
+        codecs.iterencode(codecs.iterdecode(f, encoding), "utf-8"), **fmtparams
+    )
+    for row in data:
+        yield [e.decode("utf-8") for e in row]
+
+
+def load_csv_stream(ctx, model_name, data, dialect='excel', encoding='utf-8',
+                    **fmtparams):
     """ Load a CSV from a stream
 
     Usage example::
@@ -37,7 +47,7 @@ def load_csv_stream(ctx, model_name, data, dialect='excel', **fmtparams):
                       delimiter=',')
 
     """
-    data = csv.reader(data, dialect=dialect, **fmtparams)
+    data = csv_unireader(data, encoding=encoding, **fmtparams)
     head = data.next()
     values = list(data)
     if values:
