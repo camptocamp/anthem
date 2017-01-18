@@ -38,6 +38,7 @@ def tests_prepare(ctx, version):
         ctx.run('tar xfz odoo.tar.gz')
         ctx.run('rm -f odoo.tar.gz')
     print('Installing odoo')
+    ctx.run('pip install -r odoo-{}/requirements.txt -q'.format(version))
     ctx.run('pip install -e odoo-{} -q'.format(version))
 
 
