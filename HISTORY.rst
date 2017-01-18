@@ -17,6 +17,18 @@ Unreleased
 **Build**
 
 
+0.6.0 (2017-01-18)
+------------------
+
+**Features**
+
+- CSV loaders can be used with a model in order to pass a context
+
+**Bugfixes**
+
+- Fix tests by installing eggs from odoo/requirements.txt
+
+
 0.5.0 (2016-10-12)
 ------------------
 
