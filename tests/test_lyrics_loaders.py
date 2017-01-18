@@ -19,7 +19,35 @@ csv_partner = ("id,name,street,city\n"
                )
 
 
-def test_load_csv_stream():
+def test_load_csv_stream_model():
+    csv_stream = StringIO()
+    csv_stream.write(csv_partner)
+    csv_stream.seek(0)
+    with anthem.cli.Context(None, anthem.cli.Options(test_mode=True)) as ctx:
+        load_csv_stream(ctx, ctx.env['res.partner'], csv_stream, delimiter=',')
+        partner1 = ctx.env.ref('__test__.partner1', raise_if_not_found=False)
+        assert partner1
+        assert partner1.name == 'Partner 1'
+        partner2 = ctx.env.ref('__test__.partner2', raise_if_not_found=False)
+        assert partner2
+        assert partner2.name == 'Partner 2'
+
+
+def test_load_csv_file_model(tmpdir):
+    csvfile = tmpdir.mkdir("files").join("res.partner.csv")
+    csvfile.write(csv_partner)
+    with anthem.cli.Context(None, anthem.cli.Options(test_mode=True)) as ctx:
+        load_csv(ctx, ctx.env['res.partner'], csvfile.strpath, delimiter=',')
+        partner1 = ctx.env.ref('__test__.partner1', raise_if_not_found=False)
+        assert partner1
+        assert partner1.name == 'Partner 1'
+        partner2 = ctx.env.ref('__test__.partner2', raise_if_not_found=False)
+        assert partner2
+        assert partner2.name == 'Partner 2'
+
+
+def test_load_csv_stream_model_string():
+    """ Pass string instead of model to load_csv_stream """
     csv_stream = StringIO()
     csv_stream.write(csv_partner)
     csv_stream.seek(0)
@@ -33,7 +61,7 @@ def test_load_csv_stream():
         assert partner2.name == 'Partner 2'
 
 
-def test_load_csv_file(tmpdir):
+def test_load_csv_file_model_string(tmpdir):
     csvfile = tmpdir.mkdir("files").join("res.partner.csv")
     csvfile.write(csv_partner)
     with anthem.cli.Context(None, anthem.cli.Options(test_mode=True)) as ctx:
