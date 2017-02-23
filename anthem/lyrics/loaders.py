@@ -8,7 +8,7 @@ import csv
 from ..exceptions import AnthemError
 
 
-def load_csv(ctx, model, path, dialect='excel', **fmtparams):
+def load_csv(ctx, model, path, **fmtparams):
     """ Load a CSV from a filename
 
     Usage example::
@@ -22,7 +22,7 @@ def load_csv(ctx, model, path, dialect='excel', **fmtparams):
 
     """
     with open(path, 'rb') as data:
-        load_csv_stream(ctx, model, data, dialect=dialect, **fmtparams)
+        load_csv_stream(ctx, model, data, **fmtparams)
 
 
 def csv_unireader(f, encoding="utf-8", **fmtparams):
@@ -33,8 +33,31 @@ def csv_unireader(f, encoding="utf-8", **fmtparams):
         yield [e.decode("utf-8") for e in row]
 
 
-def load_csv_stream(ctx, model, data, dialect='excel', encoding='utf-8',
-                    **fmtparams):
+def read_csv(data, dialect='excel', encoding='utf-8', **fmtparams):
+    rows = csv_unireader(data, encoding=encoding, **fmtparams)
+    header = rows.next()
+    return header, rows
+
+
+def load_rows(ctx, model, header, rows):
+    if isinstance(model, basestring):
+        model = ctx.env[model]
+    result = model.load(header, rows)
+    ids = result['ids']
+    if not ids:
+        messages = u'\n'.join(
+            u'- %s' % msg for msg in result['messages']
+        )
+        ctx.log_line(u"Failed to load CSV "
+                     u"in '%s'. Details:\n%s" %
+                     (model._name, messages))
+        raise AnthemError(u'Could not import CSV. See the logs')
+    else:
+        ctx.log_line(u"Imported %d records in '%s'" %
+                     (len(ids), model._name))
+
+
+def load_csv_stream(ctx, model, data, **fmtparams):
     """ Load a CSV from a stream
 
     Usage example::
@@ -47,22 +70,6 @@ def load_csv_stream(ctx, model, data, dialect='excel', encoding='utf-8',
                       delimiter=',')
 
     """
-    data = csv_unireader(data, encoding=encoding, **fmtparams)
-    head = data.next()
-    values = list(data)
-    if values:
-        if isinstance(model, basestring):
-            model = ctx.env[model]
-        result = model.load(head, values)
-        ids = result['ids']
-        if not ids:
-            messages = u'\n'.join(
-                u'- %s' % msg for msg in result['messages']
-            )
-            ctx.log_line(u"Failed to load CSV "
-                         u"in '%s'. Details:\n%s" %
-                         (model._name, messages))
-            raise AnthemError(u'Could not import CSV. See the logs')
-        else:
-            ctx.log_line(u"Imported %d records in '%s'" %
-                         (len(ids), model._name))
+    header, rows = read_csv(data, **fmtparams)
+    if rows:
+        load_rows(ctx, model, header, list(rows))

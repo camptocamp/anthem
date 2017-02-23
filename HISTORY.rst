@@ -12,6 +12,9 @@ Unreleased
 
 **Improvements**
 
+- Split CSV loaders in functions to be able to get rows from a CSV or to load
+  rows, enabling to modify the rows before loading them for instance
+
 **Documentation**
 
 **Build**
