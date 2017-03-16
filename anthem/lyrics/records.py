@@ -27,10 +27,13 @@ def add_xmlid(ctx, record, xmlid, noupdate=False):
 
 def create_or_update(ctx, model, xmlid, values):
     """ Create or update a record matching xmlid with values """
+    if isinstance(model, basestring):
+        model = ctx.env[model]
+
     record = ctx.env.ref(xmlid, raise_if_not_found=False)
     if record:
         record.update(values)
     else:
-        record = ctx.env[model].create(values)
+        record = model.create(values)
         add_xmlid(ctx, record, xmlid)
     return record
