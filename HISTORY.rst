@@ -8,6 +8,8 @@ Unreleased
 
 **Features**
 
+- New lyrics: Define settings like being in the interface
+
 **Bugfixes**
 
 **Improvements**

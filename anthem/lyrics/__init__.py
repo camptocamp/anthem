@@ -13,5 +13,6 @@ Examples of lyrics are:
  * add a xmlid on a record
  * upsert a record
  * uninstall a module
+ * define a setting
 
 """
