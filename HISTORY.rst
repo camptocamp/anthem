@@ -14,6 +14,8 @@ Unreleased
 
 - Split CSV loaders in functions to be able to get rows from a CSV or to load
   rows, enabling to modify the rows before loading them for instance
+- create_or_update lyrics accepts now a model so we can change its env (user,
+  context, ...)
 
 **Documentation**
 
