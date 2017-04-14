@@ -14,6 +14,7 @@ Unreleased
 
 - create_or_update lyrics accepts now a model so we can change its env (user,
   context, ...)
+- capacity to uninstall module
 
 **Documentation**
 

@@ -12,5 +12,6 @@ Examples of lyrics are:
  * load a csv, xml or yaml file
  * add a xmlid on a record
  * upsert a record
+ * uninstall a module
 
 """
