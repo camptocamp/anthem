@@ -48,10 +48,10 @@ def tests_createdb(ctx, version):
     db = dbname(version)
     print('Installing database {}'.format(db))
     if is_below_odoo_10(version):
-        ctx.run('odoo.py -d {} --workers=0 --log-level=critical '
+        ctx.run('odoo.py -d {} --workers=0 --log-level=critical -i lunch '
                 '--stop-after-init'.format(db))
     else:
-        ctx.run('odoo -d {} --workers=0 --log-level=critical '
+        ctx.run('odoo -d {} --workers=0 --log-level=critical -i lunch '
                 '--stop-after-init'.format(db))
 
 

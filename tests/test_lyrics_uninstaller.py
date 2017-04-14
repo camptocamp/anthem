@@ -7,14 +7,16 @@ from anthem.lyrics.uninstaller import uninstall
 from anthem.exceptions import AnthemError
 
 
-def test_uninstall():
+def test_uninstall_1():
     with anthem.cli.Context(None, anthem.cli.Options(test_mode=True)) as ctx:
-        env = ctx.env
-        env['ir.module.module'].search([
-            ('name', '=', 'sale_order_dates')]).button_immediate_install()
         try:
-            uninstall(ctx, ['sale_order_dates'])
+            uninstall(ctx, [])
         except AnthemError:
             pass
         else:
             assert False
+
+
+def test_uninstall_2():
+    with anthem.cli.Context(None, anthem.cli.Options(test_mode=True)) as ctx:
+        uninstall(ctx, ['lunch'])
