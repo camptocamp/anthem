@@ -12,15 +12,20 @@ Unreleased
 
 **Improvements**
 
+**Documentation**
+
+**Build**
+
+0.7.0 (2017-04-28)
+------------------
+
+**Improvements**
+
 - Split CSV loaders in functions to be able to get rows from a CSV or to load
   rows, enabling to modify the rows before loading them for instance
 - create_or_update lyrics accepts now a model so we can change its env (user,
   context, ...)
-- capacity to uninstall module
-
-**Documentation**
-
-**Build**
+- New lyrics to uninstall module
 
 
 0.6.0 (2017-01-18)
