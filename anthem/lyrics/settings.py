@@ -6,8 +6,10 @@
 def define_settings(ctx, model, values):
     """ Define settings like being in the interface
      Example :
-      - model = 'sale.config.settings'
+      - model = 'sale.config.settings' or ctx.env['sale.config.settings']
       - values = {'default_invoice_policy': 'delivery'}
      Be careful, settings onchange are not triggered with this function.
     """
-    ctx.env[model].create(values).execute()
+    if isinstance(model, basestring):
+        model = ctx.env[model]
+    model.create(values).execute()
