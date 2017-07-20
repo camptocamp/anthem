@@ -57,8 +57,15 @@ def load_rows(ctx, model, header, rows):
                      (len(ids), model._name))
 
 
-def load_csv_stream(ctx, model, data, **fmtparams):
-    """ Load a CSV from a stream
+def load_csv_stream(ctx, model, data,
+                    header=None, header_exclude=None, **fmtparams):
+    """Load a CSV from a stream.
+
+    :param ctx: current anthem context
+    :param model: model name as string or model klass
+    :param data: csv data to load
+    :param header: csv fieldnames whitelist
+    :param header_exclude: csv fieldnames blacklist
 
     Usage example::
 
@@ -68,8 +75,25 @@ def load_csv_stream(ctx, model, data, **fmtparams):
       load_csv_stream(ctx, ctx.env['res.users'],
                       resource_stream(req, 'data/users.csv'),
                       delimiter=',')
-
     """
-    header, rows = read_csv(data, **fmtparams)
-    if rows:
-        load_rows(ctx, model, header, list(rows))
+    _header, _rows = read_csv(data, **fmtparams)
+    header = header if header else _header
+    if _rows:
+        # check if passed header contains all the fields
+        if header != _header and not header_exclude:
+            # if not, we exclude the rest of the fields
+            header_exclude = [x for x in _header if x not in header]
+        if header_exclude:
+            # exclude fields from header as well as respective values
+            header = [x for x in header if x not in header_exclude]
+            # we must loop trough all the rows too to pop values
+            # since odoo import works only w/ reader and not w/ dictreader
+            pop_idxs = [_header.index(x) for x in header_exclude]
+            rows = []
+            for i, row in enumerate(_rows):
+                rows.append(
+                    [x for j, x in enumerate(row) if j not in pop_idxs]
+                )
+        else:
+            rows = list(_rows)
+        load_rows(ctx, model, header, rows)
