@@ -8,7 +8,7 @@ import csv
 from ..exceptions import AnthemError
 
 
-def load_csv(ctx, model, path, **fmtparams):
+def load_csv(ctx, model, path, header=None, header_exclude=None, **fmtparams):
     """ Load a CSV from a filename
 
     Usage example::
@@ -22,7 +22,9 @@ def load_csv(ctx, model, path, **fmtparams):
 
     """
     with open(path, 'rb') as data:
-        load_csv_stream(ctx, model, data, **fmtparams)
+        load_csv_stream(ctx, model, data,
+                        header=header, header_exclude=header_exclude,
+                        **fmtparams)
 
 
 def csv_unireader(f, encoding="utf-8", **fmtparams):
