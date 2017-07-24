@@ -8,8 +8,6 @@ Unreleased
 
 **Features**
 
-- New lyrics: Define settings like being in the interface
-
 **Bugfixes**
 
 **Improvements**
@@ -17,6 +15,20 @@ Unreleased
 **Documentation**
 
 **Build**
+
+
+0.8.0 (2017-07-24)
+------------------
+
+**Features**
+
+- New lyrics: Define settings like being in the interface
+- Add CSV Loading columns control (columns whitelist and blacklist)
+
+**Bugfixes**
+
+- Fix error when loading CSV with no rows
+
 
 0.7.0 (2017-04-28)
 ------------------
