@@ -98,4 +98,5 @@ def load_csv_stream(ctx, model, data,
                 )
         else:
             rows = list(_rows)
-        load_rows(ctx, model, header, rows)
+        if rows:
+            load_rows(ctx, model, header, rows)
