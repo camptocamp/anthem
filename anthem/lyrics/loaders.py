@@ -100,3 +100,13 @@ def load_csv_stream(ctx, model, data,
             rows = list(_rows)
         if rows:
             load_rows(ctx, model, header, rows)
+
+
+def update_translations(ctx, modules):
+    """ Update translations from module list
+
+    :param modules: a list of modules
+    """
+    for module in modules:
+        ctx.env['ir.module.module'].with_context(overwrite=True).search(
+            [('name', '=', module)]).update_translations()
