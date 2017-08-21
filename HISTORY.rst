@@ -16,6 +16,16 @@ Unreleased
 
 **Build**
 
+0.9.0 (2017-08-21)
+------------------
+
+**Features**
+
+- New lyrics: modules.update_translations to update translations from po files
+- Lyrics 'uninstall' has been moved from uninstaller.uninstall to modules.uninstall,
+  previous path is still working for backward compatibility
+- New lyrics context manager 'records.switch_company'
+
 
 0.8.0 (2017-07-24)
 ------------------
