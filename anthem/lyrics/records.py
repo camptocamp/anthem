@@ -2,6 +2,8 @@
 # Copyright 2016 Camptocamp SA
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl-3.0.en.html)
 
+from contextlib import contextmanager
+
 
 def add_xmlid(ctx, record, xmlid, noupdate=False):
     """ Add a XMLID on an existing record """
@@ -37,3 +39,22 @@ def create_or_update(ctx, model, xmlid, values):
         record = model.create(values)
         add_xmlid(ctx, record, xmlid)
     return record
+
+
+def safe_record(ctx, item):
+    """Make sure we get a record instance even if we pass an xmlid."""
+    if isinstance(item, basestring):
+        return ctx.env.ref(item)
+    return item
+
+
+@contextmanager
+def switch_company(ctx, company):
+    """Context manager to switch current company.
+
+    Accepts both company record and xmlid.
+    """
+    current_company = ctx.env.user.company_id
+    ctx.env.user.company_id = safe_record(ctx, company)
+    yield ctx
+    ctx.env.user.company_id = current_company
