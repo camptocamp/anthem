@@ -16,6 +16,8 @@ Unreleased
 
 **Build**
 
+- Add 'build-release.sh' script with commands to build and upload the dist files
+
 0.9.0 (2017-08-21)
 ------------------
 
