@@ -7,10 +7,6 @@ from __future__ import print_function
 import argparse
 import code
 import importlib
-import logging
-import signal
-
-from contextlib import contextmanager
 
 from anthem import __version__ as anthem_version
 try:
@@ -24,7 +20,7 @@ except ImportError:
     odoo_logger = 'openerp'
 
 
-from .output import LogIndent
+from .ctx import Context, Options
 
 
 def main():
@@ -72,14 +68,6 @@ def banner():
     return b
 
 
-class Options(object):
-
-    def __init__(self, interactive=False, quiet=False, test_mode=False):
-        self.interactive = interactive
-        self.quiet = quiet
-        self.test_mode = test_mode
-
-
 def run(odoo_args, target, options):
     with Context(odoo_args, options) as ctx:
         mod_name, func_name = target.split('::')
@@ -93,52 +81,3 @@ def run(odoo_args, target, options):
             readline.parse_and_bind("tab: complete")
             console.interact(banner=banner())
         ctx.env.cr.commit()
-
-
-class Context(object):
-    def __init__(self, odoo_args, options):
-        self.env = self._build_odoo_env(odoo_args)
-        self.options = options
-        self._log = LogIndent()
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        if self.options.test_mode:
-            self.env.cr.rollback()
-        self.env.cr.close()
-
-    def _build_odoo_env(self, odoo_args):
-        odoo.tools.config.parse_config(odoo_args)
-        dbname = odoo.tools.config['db_name']
-        if not dbname:
-            argparse.ArgumentParser().error(
-                "please provide a database name though Odoo options (either "
-                "-d or an Odoo configuration file)"
-            )
-        logging.getLogger(odoo_logger).setLevel(logging.ERROR)
-        odoo.service.server.start(preload=[], stop=True)
-
-        # odoo.service.server.start() modifies the SIGINT signal by its own
-        # one which in fact prevents us to stop anthem with Ctrl-c.
-        # Restore the default one.
-        signal.signal(signal.SIGINT, signal.default_int_handler)
-
-        registry = odoo.modules.registry.RegistryManager.get(dbname)
-        cr = registry.cursor()
-        uid = odoo.SUPERUSER_ID
-        Environment.reset()
-        context = Environment(cr, uid, {})['res.users'].context_get()
-        return Environment(cr, uid, context)
-
-    def log_line(self, message):
-        self._log.print_indent(message)
-
-    @contextmanager
-    def log(self, name, timing=True):
-        if self.options.quiet:
-            yield
-        else:
-            with self._log.display(name, timing=timing):
-                yield

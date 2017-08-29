@@ -23,7 +23,7 @@ def test_load_csv_stream_model():
     csv_stream = StringIO()
     csv_stream.write(csv_partner)
     csv_stream.seek(0)
-    with anthem.cli.Context(None, anthem.cli.Options(test_mode=True)) as ctx:
+    with anthem.ctx.Context(None, anthem.ctx.Options(test_mode=True)) as ctx:
         load_csv_stream(ctx, ctx.env['res.partner'], csv_stream, delimiter=',')
         partner1 = ctx.env.ref('__test__.partner1', raise_if_not_found=False)
         assert partner1
@@ -36,7 +36,7 @@ def test_load_csv_stream_model():
 def test_load_csv_file_model(tmpdir):
     csvfile = tmpdir.mkdir("files").join("res.partner.csv")
     csvfile.write(csv_partner)
-    with anthem.cli.Context(None, anthem.cli.Options(test_mode=True)) as ctx:
+    with anthem.ctx.Context(None, anthem.ctx.Options(test_mode=True)) as ctx:
         load_csv(ctx, ctx.env['res.partner'], csvfile.strpath, delimiter=',')
         partner1 = ctx.env.ref('__test__.partner1', raise_if_not_found=False)
         assert partner1
@@ -51,7 +51,7 @@ def test_load_csv_stream_model_string():
     csv_stream = StringIO()
     csv_stream.write(csv_partner)
     csv_stream.seek(0)
-    with anthem.cli.Context(None, anthem.cli.Options(test_mode=True)) as ctx:
+    with anthem.ctx.Context(None, anthem.ctx.Options(test_mode=True)) as ctx:
         load_csv_stream(ctx, 'res.partner', csv_stream, delimiter=',')
         partner1 = ctx.env.ref('__test__.partner1', raise_if_not_found=False)
         assert partner1
@@ -64,7 +64,7 @@ def test_load_csv_stream_model_string():
 def test_load_csv_file_model_string(tmpdir):
     csvfile = tmpdir.mkdir("files").join("res.partner.csv")
     csvfile.write(csv_partner)
-    with anthem.cli.Context(None, anthem.cli.Options(test_mode=True)) as ctx:
+    with anthem.ctx.Context(None, anthem.ctx.Options(test_mode=True)) as ctx:
         load_csv(ctx, 'res.partner', csvfile.strpath, delimiter=',')
         partner1 = ctx.env.ref('__test__.partner1', raise_if_not_found=False)
         assert partner1
@@ -80,6 +80,6 @@ def test_load_erroneous_csv():
     csv_stream = StringIO()
     csv_stream.write(err_csv)
     csv_stream.seek(0)
-    with anthem.cli.Context(None, anthem.cli.Options(test_mode=True)) as ctx:
+    with anthem.ctx.Context(None, anthem.ctx.Options(test_mode=True)) as ctx:
         with pytest.raises(AnthemError):
             load_csv_stream(ctx, 'res.partner', csv_stream, delimiter=',')

@@ -7,7 +7,7 @@ from anthem.lyrics.records import add_xmlid, create_or_update
 
 
 def test_add_xmlid():
-    with anthem.cli.Context(None, anthem.cli.Options(test_mode=True)) as ctx:
+    with anthem.ctx.Context(None, anthem.ctx.Options(test_mode=True)) as ctx:
         env = ctx.env
         record = env['res.partner'].create({'name': 'test'})
         assert not record.get_metadata()[0]['xmlid']
@@ -18,7 +18,7 @@ def test_add_xmlid():
 
 
 def test_create_or_update():
-    with anthem.cli.Context(None, anthem.cli.Options(test_mode=True)) as ctx:
+    with anthem.ctx.Context(None, anthem.ctx.Options(test_mode=True)) as ctx:
         record = create_or_update(ctx, 'res.partner', 'test.upsert',
                                   {'name': 'test'})
         assert record.name == 'test'
