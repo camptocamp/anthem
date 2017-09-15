@@ -112,6 +112,8 @@ class Context(object):
     def _build_odoo_env(self, odoo_args):
         odoo.tools.config.parse_config(odoo_args)
         dbname = odoo.tools.config['db_name']
+        odoo.tools.config['workers'] = 0
+        odoo.tools.config['xmlrpc'] = False
         if not dbname:
             argparse.ArgumentParser().error(
                 "please provide a database name though Odoo options (either "
