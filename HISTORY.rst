@@ -10,11 +10,19 @@ Unreleased
 
 **Bugfixes**
 
-* Disable Odoo's xmlrpc port
-
 **Improvements**
 
 **Documentation**
+
+**Build**
+
+
+0.10.0 (2017-09-19)
+------------------
+
+**Bugfixes**
+
+* Disable Odoo's xmlrpc port
 
 **Build**
 
