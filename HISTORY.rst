@@ -10,6 +10,8 @@ Unreleased
 
 **Bugfixes**
 
+* Disable Odoo's xmlrpc port
+
 **Improvements**
 
 **Documentation**
