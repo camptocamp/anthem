@@ -12,6 +12,8 @@ Unreleased
 
 **Improvements**
 
+ - Make it Python 3 and Odoo 11 compatible
+
 **Documentation**
 
 **Build**

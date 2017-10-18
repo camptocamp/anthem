@@ -5,7 +5,7 @@
 import codecs
 import csv
 
-from past.types import basestring
+from past.builtins import basestring
 
 from ..exceptions import AnthemError
 
@@ -39,7 +39,7 @@ def csv_unireader(f, encoding="utf-8", **fmtparams):
 
 def read_csv(data, dialect='excel', encoding='utf-8', **fmtparams):
     rows = csv_unireader(data, encoding=encoding, **fmtparams)
-    header = rows.next()
+    header = next(rows)
     return header, rows
 
 

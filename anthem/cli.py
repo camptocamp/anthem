@@ -127,7 +127,10 @@ class Context(object):
         # Restore the default one.
         signal.signal(signal.SIGINT, signal.default_int_handler)
 
-        registry = odoo.modules.registry.RegistryManager.get(dbname)
+        if odoo.release.version_info[0] > 9:
+            registry = odoo.modules.registry.Registry(dbname)
+        else:
+            registry = odoo.modules.registry.RegistryManager.get(dbname)
         cr = registry.cursor()
         uid = odoo.SUPERUSER_ID
         Environment.reset()
