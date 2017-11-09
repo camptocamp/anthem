@@ -2,6 +2,7 @@
 # Copyright 2016-2017 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
+import sys
 import codecs
 import csv
 
@@ -30,11 +31,17 @@ def load_csv(ctx, model, path, header=None, header_exclude=None, **fmtparams):
 
 
 def csv_unireader(f, encoding="utf-8", **fmtparams):
-    data = csv.reader(
-        codecs.iterencode(codecs.iterdecode(f, encoding), "utf-8"), **fmtparams
-    )
+    if sys.version_info[0] == 3:
+        data = csv.reader(codecs.iterdecode(f, encoding), **fmtparams)
+    else:
+        data = csv.reader(
+            codecs.iterencode(codecs.iterdecode(f, encoding), "utf-8"),
+            **fmtparams)
     for row in data:
-        yield [e.decode("utf-8") for e in row]
+        if sys.version_info[0] == 3:
+            yield [e for e in row]
+        else:
+            yield [e.decode("utf-8") for e in row]
 
 
 def read_csv(data, dialect='excel', encoding='utf-8', **fmtparams):
