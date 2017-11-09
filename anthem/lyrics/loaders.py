@@ -4,6 +4,7 @@
 
 from past.builtins import basestring
 
+import sys
 import codecs
 import csv
 
