@@ -88,12 +88,15 @@ def tests_prepare_config(ctx, version, source, target):
 
 
 @task(default=True)
-def tests_run(ctx):
-    ctx.run('tox', pty=True)
+def tests_prepare_version(ctx, version):
+    tests_prepare(ctx, version)
+    config_file = '/tmp/test-anthem-config-%s.cfg' % version
+    tests_prepare_config(ctx, version, 'tests/config/odoo.cfg', config_file)
+    tests_createdb(ctx, version)
 
 
-tests.add_task(tests_run, 'run')
+tests.add_task(tests_prepare_version, 'prepare-version')
 tests.add_task(tests_createdb, 'createdb')
 tests.add_task(tests_dropdb, 'dropdb')
 tests.add_task(tests_prepare, 'prepare')
-tests.add_task(tests_prepare_config, 'prepare_config')
+tests.add_task(tests_prepare_config, 'prepare-config')
