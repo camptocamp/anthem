@@ -4,23 +4,21 @@ python:
   - 3.6
 
 env:
-  - ODOOVERSION=9.0
-  - ODOOVERSION=10.0
+  - ODOOVERSION=9.0 LINT=false
+  - ODOOVERSION=10.0 LINT=false
 
 matrix:
   exclude:
   - python: 3.6
-    env: ODOOVERSION=9.0
+    env: ODOOVERSION=9.0 LINT=false
   - python: 3.6
-    env: ODOOVERSION=10.0
+    env: ODOOVERSION=10.0 LINT=false
+  include:
+  - python: 3.6
+    env: LINT=true
 
 services:
   - postgresql
-
-virtualenv:
-  # needed for lxml, lxml installed with pip in the virtualenv gives an
-  # error on travis
-  system_site_packages: true
 
 addons:
   postgresql: "9.6"
@@ -28,15 +26,15 @@ addons:
     packages:
       - python-lxml # because pip installation is slow
 
-install:
-  - pip install flake8 invoke
-
 before_script:
-  - virtualenv /tmp/venv-${ODOOVERSION}
-  - source /tmp/venv-${ODOOVERSION}/bin/activate
-  - pip install invoke flake8 pytest
-  - pip install .
-  - invoke tests.prepare-version "${ODOOVERSION}"
+  - if [ "$LINT" == false ] ; then virtualenv /tmp/venv-${ODOOVERSION} ; fi
+  - if [ "$LINT" == false ] ; then source /tmp/venv-${ODOOVERSION}/bin/activate ; fi
+  - if [ "$LINT" == false ] ; then pip install invoke pytest ; fi
+  - if [ "$LINT" == false ] ; then pip install . ; fi
+  - if [ "$LINT" == false ] ; then invoke tests.prepare-version "${ODOOVERSION}" ; fi
+  - if [ "$LINT" == true ] ; then pip install flake8 readme_renderer ; fi
 
 script:
-  - OPENERP_SERVER=/tmp/test-anthem-config-${ODOOVERSION}.cfg py.test tests
+  - if [ "$LINT" == false ] ; then OPENERP_SERVER=/tmp/test-anthem-config-${ODOOVERSION}.cfg py.test tests ; fi
+  - if [ "$LINT" == true ] ; then flake8 anthem tests ; fi
+  - if [ "$LINT" == true ] ; then python setup.py check -r -s ; fi
