@@ -106,33 +106,39 @@ Run the tests
 ~~~~~~~~~~~~~
 
 To run ``anthem``'s tests, it is a good idea to do an *editable* install of it
-in a virtualenv, and then intall and run ``tox`` as follows::
+in a virtualenv. You must also prepare the environment by installing odoo packages.
+
+Odoo 9.0 (Python 2)::
 
   $ git clone https://github.com/camptocamp/anthem.git
   Cloning into 'anthem'...
   $ cd anthem
-  $ python2 -m virtualenv env
-  $ source env/bin/activate
+  $ virtualenv -p python2 env-9.0
+  $ source env-9.0/bin/activate
   $ pip install -e .
   $ pip install pytest invoke tox
-  $ tox
+  $ invoke tests.prepare-version 9.0
+  $ OPENERP_SERVER=/tmp/test-anthem-config-9.0.cfg py.test -s tests
 
-Additional arguments will be passed to ``pytest``::
+Odoo 10.0 (Python 2)::
 
-  $ tox -e py27 -- -x tests/test_cli.py
+  $ git clone https://github.com/camptocamp/anthem.git
+  Cloning into 'anthem'...
+  $ cd anthem
+  $ virtualenv -p python2 env-10.0
+  $ source env-10.0/bin/activate
+  $ pip install -e .
+  $ pip install pytest invoke tox
+  $ invoke tests.prepare-version 10.0
+  $ OPENERP_SERVER=/tmp/test-anthem-config-10.0.cfg py.test -s tests
 
-If you prefer to execute the tests directly with ``pytest``, you can run::
+If need be, you can drop the test database with (adapt the version)::
 
-  $ OPENERP_SERVER=tests/config/odoo.cfg py.test
+  $ invoke tests.dropdb 9.0
 
-But before, you have to ensure to have the proper environment for the tests with::
-
-  $ invoke tests.prepare
-  $ invoke tests.createdb
-
-Those steps, automatically called when using ``tox``, will download the nightly
-release of Odoo and install it as a package, so tests can be run against it
-(and that's also why it is important to use a virtualenv!)
+These steps will download the nightly release of Odoo install it as a package
+then install a database, so tests can be run against it (and that's also why it
+is important to use a virtualenv!)
 
 When calling ``pytest``, you have to define the ``OPENERP_SERVER`` environment
 variable with the configuration file for the Odoo database that will be used
