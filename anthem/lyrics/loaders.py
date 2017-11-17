@@ -5,6 +5,8 @@
 import codecs
 import csv
 
+from past.types import basestring
+
 from ..exceptions import AnthemError
 
 

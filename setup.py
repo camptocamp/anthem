@@ -5,7 +5,7 @@ import re
 from setuptools import setup, find_packages
 
 with open('anthem/__init__.py') as f:
-    version = re.search('^__version__\s*=\s*"(.*)"', f.read(), re.M).group(1)
+    version = re.search(r'^__version__\s*=\s*"(.*)"', f.read(), re.M).group(1)
 with open('README.rst') as f:
     readme = f.read()
 with open('HISTORY.rst') as f:
@@ -24,6 +24,7 @@ setup(
     entry_points={
         'console_scripts': ['anthem = anthem.cli:main']
     },
+    install_requires=['future'],
     classifiers=(
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
