@@ -14,7 +14,7 @@ def uninstall(ctx, module_list):
     mods = ctx.env['ir.module.module'].search([('name', 'in', module_list)])
     try:
         mods.button_immediate_uninstall()
-    except:
+    except Exception:
         raise AnthemError(u'Cannot uninstall modules. See the logs')
 
 
