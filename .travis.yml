@@ -30,8 +30,6 @@ addons:
       - python-lxml # because pip installation is slow
 
 before_script:
-  - if [ "$LINT" == false ] ; then virtualenv /tmp/venv-${ODOOVERSION} ; fi
-  - if [ "$LINT" == false ] ; then source /tmp/venv-${ODOOVERSION}/bin/activate ; fi
   - if [ "$LINT" == false ] ; then pip install invoke pytest ; fi
   - if [ "$LINT" == false ] ; then pip install . ; fi
   - if [ "$LINT" == false ] ; then invoke tests.prepare-version "${ODOOVERSION}" ; fi
