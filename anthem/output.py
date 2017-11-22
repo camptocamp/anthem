@@ -30,7 +30,7 @@ class LogIndent(object):
         start = time.time()
         try:
             yield
-        except:
+        except Exception:
             self.level -= 1
             self.print_indent(u'{}: error'.format(name))
             raise

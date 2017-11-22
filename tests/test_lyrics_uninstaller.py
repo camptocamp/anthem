@@ -4,7 +4,7 @@
 
 import pytest
 import anthem.cli
-from anthem.lyrics.uninstaller import uninstall
+from anthem.lyrics.modules import uninstall
 from anthem.exceptions import AnthemError
 
 
