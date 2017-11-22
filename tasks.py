@@ -25,7 +25,7 @@ def dbname(version):
 
 
 def assert_version(version):
-    assert version in ('10.0', '9.0')
+    assert version in ('11.0', '10.0', '9.0')
 
 
 @task

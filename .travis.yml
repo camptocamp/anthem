@@ -6,6 +6,7 @@ python:
 env:
   - ODOOVERSION=9.0 LINT=false
   - ODOOVERSION=10.0 LINT=false
+  - ODOOVERSION=11.0 LINT=false
 
 matrix:
   exclude:
@@ -13,6 +14,8 @@ matrix:
     env: ODOOVERSION=9.0 LINT=false
   - python: 3.6
     env: ODOOVERSION=10.0 LINT=false
+  - python: 2.7
+    env: ODOOVERSION=11.0 LINT=false
   include:
   - python: 3.6
     env: LINT=true
