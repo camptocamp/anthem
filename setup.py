@@ -24,7 +24,7 @@ setup(
     entry_points={
         'console_scripts': ['anthem = anthem.cli:main']
     },
-    install_requires=['future'],
+    install_requires=['future', 'unicodecsv'],
     classifiers=(
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
