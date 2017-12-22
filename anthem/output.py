@@ -8,14 +8,19 @@ import functools
 import sys
 import time
 
+from past.builtins import PY3
+
 from contextlib import contextmanager
 
 
 def safe_print(ustring, errors='replace', **kwargs):
     """ Safely print a unicode string """
     encoding = sys.stdout.encoding or 'utf-8'
-    bytestr = ustring.encode(encoding, errors=errors)
-    print(bytestr, **kwargs)
+    if PY3:
+        print(ustring, **kwargs)
+    else:
+        bytestr = ustring.encode(encoding, errors=errors)
+        print(bytestr, **kwargs)
 
 
 class LogIndent(object):
@@ -67,7 +72,7 @@ def log(func=None, name=None, timing=True):
             if func.__doc__:
                 message = func.__doc__.splitlines()[0].strip()
         if message is None:
-            message = func.func_name
+            message = func.__name__
         with ctx.log(message, timing=timing):
             return func(*args, **kwargs)
     return decorated

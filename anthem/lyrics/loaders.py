@@ -2,10 +2,9 @@
 # Copyright 2016-2017 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-import codecs
-import csv
+import unicodecsv as csv
 
-from past.types import basestring
+from past.builtins import basestring
 
 from ..exceptions import AnthemError
 
@@ -29,17 +28,9 @@ def load_csv(ctx, model, path, header=None, header_exclude=None, **fmtparams):
                         **fmtparams)
 
 
-def csv_unireader(f, encoding="utf-8", **fmtparams):
-    data = csv.reader(
-        codecs.iterencode(codecs.iterdecode(f, encoding), "utf-8"), **fmtparams
-    )
-    for row in data:
-        yield [e.decode("utf-8") for e in row]
-
-
 def read_csv(data, dialect='excel', encoding='utf-8', **fmtparams):
-    rows = csv_unireader(data, encoding=encoding, **fmtparams)
-    header = rows.next()
+    rows = csv.reader(data, encoding=encoding, **fmtparams)
+    header = next(rows)
     return header, rows
 
 

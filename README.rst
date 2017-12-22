@@ -116,7 +116,7 @@ Odoo 9.0 (Python 2)::
   $ virtualenv -p python2 env-9.0
   $ source env-9.0/bin/activate
   $ pip install -e .
-  $ pip install pytest invoke tox
+  $ pip install pytest invoke
   $ invoke tests.prepare-version 9.0
   $ OPENERP_SERVER=/tmp/test-anthem-config-9.0.cfg py.test -s tests
 
@@ -128,9 +128,21 @@ Odoo 10.0 (Python 2)::
   $ virtualenv -p python2 env-10.0
   $ source env-10.0/bin/activate
   $ pip install -e .
-  $ pip install pytest invoke tox
+  $ pip install pytest invoke
   $ invoke tests.prepare-version 10.0
   $ OPENERP_SERVER=/tmp/test-anthem-config-10.0.cfg py.test -s tests
+
+Odoo 11.0 (Python 3)::
+
+  $ git clone https://github.com/camptocamp/anthem.git
+  Cloning into 'anthem'...
+  $ cd anthem
+  $ virtualenv -p python3 anthem-env-11.0
+  $ source anthem-env-11.0/bin/activate
+  $ pip install -e .
+  $ pip install pytest invoke
+  $ invoke tests.prepare-version 11.0
+  $ OPENERP_SERVER=/tmp/test-anthem-config-11.0.cfg py.test -s tests
 
 If need be, you can drop the test database with (adapt the version)::
 

@@ -25,7 +25,7 @@ def dbname(version):
 
 
 def assert_version(version):
-    assert version in ('10.0', '9.0')
+    assert version in ('11.0', '10.0', '9.0')
 
 
 @task
@@ -37,7 +37,7 @@ def tests_prepare(ctx, version):
         ctx.run('wget -nv -c -O odoo.tar.gz {}'.format(url))
         ctx.run('tar xfz odoo.tar.gz')
         ctx.run('rm -f odoo.tar.gz')
-    print('Installing odoo')
+    print('Installing odoo, now')
     ctx.run('pip install -r odoo-{}/requirements.txt -q'.format(version))
     ctx.run('pip install -e odoo-{} -q'.format(version))
 

@@ -2,7 +2,7 @@
 # Copyright 2016 Camptocamp SA
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl-3.0.en.html)
 
-from past.types import basestring
+from past.builtins import basestring
 from contextlib import contextmanager
 
 
