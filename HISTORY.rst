@@ -12,11 +12,22 @@ Unreleased
 
 **Improvements**
 
- - Make it Python 3 and Odoo 11 compatible
-
 **Documentation**
 
 **Build**
+
+0.11.0 (2017-12-22)
+-------------------
+
+**Features**
+
+ - Make it Python 3 and Odoo 11 compatible
+
+**Build**
+
+ - Switch to unicodecsv instead of custom code to handle that
+ - Fix the flapping tests setup. Removed tox which was provoking that for some reason.
+ - Add a lint check in build
 
 
 0.10.0 (2017-09-19)
