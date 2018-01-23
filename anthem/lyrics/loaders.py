@@ -8,6 +8,8 @@ from past.builtins import basestring
 
 from ..exceptions import AnthemError
 
+from . import modules
+
 
 def load_csv(ctx, model, path, header=None, header_exclude=None, **fmtparams):
     """ Load a CSV from a filename
@@ -95,11 +97,11 @@ def load_csv_stream(ctx, model, data,
             load_rows(ctx, model, header, rows)
 
 
-def update_translations(ctx, modules):
+def update_translations(ctx, module_list):
     """ Update translations from module list
 
-    :param modules: a list of modules
+    :param module_list: a list of modules
     """
-    for module in modules:
-        ctx.env['ir.module.module'].with_context(overwrite=True).search(
-            [('name', '=', module)]).update_translations()
+    modules.update_translations(ctx, module_list)
+    ctx.log_line(u'Deprecated: use anthem.lyrics.modules.update_translations'
+                 'instead of anthem.lyrics.loaders.update_translations')
