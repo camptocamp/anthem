@@ -12,6 +12,9 @@ Unreleased
 
 **Improvements**
 
+ - Deprecate message for duplicate code "update_translations" from loaders as
+   it has been moved to modules
+
 **Documentation**
 
 **Build**
