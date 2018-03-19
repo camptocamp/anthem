@@ -8,6 +8,7 @@ import argparse
 import code
 import importlib
 import logging
+import os
 import signal
 
 from contextlib import contextmanager
@@ -25,6 +26,9 @@ except ImportError:
 
 
 from .output import LogIndent
+
+
+ODOO_DATA_PATH = os.getenv('ODOO_DATA_PATH')
 
 
 def main():
@@ -53,9 +57,20 @@ def main():
         'configuration file and -d for the database name. Those must be at '
         'the end of the arguments'
     )
+    parser.add_argument(
+        '--odoo-data-path',
+        help='Base data path for files to load (CSVs for instance). '
+             'This path will be used to compute '
+             'the absolute path of each file to load.'
+    )
     args = parser.parse_args()
-    odoo_args = vars(args)['odoo-args']
-    options = Options(interactive=args.interactive, quiet=args.quiet)
+    _vars = vars(args)
+    odoo_args = _vars['odoo-args']
+    options = Options(
+        interactive=args.interactive,
+        quiet=args.quiet,
+        odoo_data_path=_vars.get('odoo-data-path') or ODOO_DATA_PATH
+    )
     run(odoo_args, args.target, options)
 
 
@@ -74,10 +89,13 @@ def banner():
 
 class Options(object):
 
-    def __init__(self, interactive=False, quiet=False, test_mode=False):
+    def __init__(self, interactive=False, quiet=False,
+                 test_mode=False, odoo_data_path=None):
         self.interactive = interactive
         self.quiet = quiet
         self.test_mode = test_mode
+        self.odoo_data_path = \
+            odoo_data_path.rstrip('/') if odoo_data_path else ''
 
 
 def run(odoo_args, target, options):
