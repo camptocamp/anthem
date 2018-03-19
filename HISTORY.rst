@@ -12,12 +12,23 @@ Unreleased
 
 **Improvements**
 
- - Deprecate message for duplicate code "update_translations" from loaders as
-   it has been moved to modules
-
 **Documentation**
 
 **Build**
+
+0.12.0 (2018-03-19)
+-------------------
+
+**Features**
+
+- Add a new option ``--odoo-data-path`` or env. variable ``ODOO_DATA_PATH``.
+- The ``lyrics.loaders.load_csv`` method now accepts a relative path appended to the
+  new option "odoo data path". Absolute paths are still allowed.
+
+**Bugfixes**
+
+- ``lyrics.loaders.update_translations`` is now deprecated as it was a duplicate from
+  ``lyrics.modules.update_translations``
 
 0.11.0 (2017-12-22)
 -------------------
