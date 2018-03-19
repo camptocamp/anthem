@@ -3,16 +3,25 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import unicodecsv as csv
-
+import os
 from past.builtins import basestring
 
 from ..exceptions import AnthemError
-
 from . import modules
 
 
 def load_csv(ctx, model, path, header=None, header_exclude=None, **fmtparams):
-    """ Load a CSV from a filename
+    """Load a CSV from a file path.
+
+    :param ctx: Anthem context
+    :param model: Odoo model name or model klass from env
+    :param path: absolute or relative path to CSV file.
+        If a relative path is given you must provide a value for
+        `ODOO_DATA_PATH` in your environment
+        or set `--odoo-data-path` option.
+    :param header: whitelist of CSV columns to load
+    :param header_exclude: blacklist of CSV columns to not load
+    :param fmtparams: keyword params for `csv_unireader`
 
     Usage example::
 
@@ -24,6 +33,16 @@ def load_csv(ctx, model, path, header=None, header_exclude=None, **fmtparams):
                delimiter=',')
 
     """
+    if not os.path.isabs(path):
+        if ctx.options.odoo_data_path:
+            path = os.path.join(ctx.options.odoo_data_path, path)
+        else:
+            raise AnthemError(
+                'Got a relative path. '
+                'Please, provide a value for `ODOO_DATA_PATH` '
+                'in your environment or set `--odoo-data-path` option.'
+            )
+
     with open(path, 'rb') as data:
         load_csv_stream(ctx, model, data,
                         header=header, header_exclude=header_exclude,
