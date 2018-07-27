@@ -59,3 +59,16 @@ def switch_company(ctx, company):
     ctx.env.user.company_id = safe_record(ctx, company)
     yield ctx
     ctx.env.user.company_id = current_company
+
+
+def process_by_slice(ctx, records, method, step=1000):
+    total_length = len(records)
+    ctx.log_line("# Total length to process: {}".format(total_length))
+    iterat = (total_length // step) + 1
+
+    call_method = getattr(records, method, None)
+    if callable(call_method):
+        for i in range(iterat):
+            inf, sup = i * step, (i + 1) * step - 1
+            ctx.log_line("Processing slice {}/{}".format(i, iterat))
+            getattr(records[inf:sup], method)()
