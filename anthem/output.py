@@ -50,7 +50,8 @@ class LogIndent(object):
             safe_print(u"{}{}".format(u"    " * self.level, message))
         else:
             safe_print(u"{}{}: {}".format(u"    " * self.level,
-                                          time.strftime('%X %x %Z'), message))
+                                          time.strftime('%Y-%m-%d %H:%M:%S'),
+                                          message))
 
 
 def log(func=None, name=None, timing=True, timestamp=False):
