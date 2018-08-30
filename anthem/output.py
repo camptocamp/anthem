@@ -29,38 +29,46 @@ class LogIndent(object):
         self.level = 0
 
     @contextmanager
-    def display(self, name, timing=True):
-        self.print_indent(u'{}...'.format(name))
+    def display(self, name, timing=True, timestamp=False):
+        self.print_indent(u'{}...'.format(name), timestamp=timestamp)
         self.level += 1
         start = time.time()
         try:
             yield
         except Exception:
             self.level -= 1
-            self.print_indent(u'{}: error'.format(name))
+            self.print_indent(u'{}: error'.format(name), timestamp=timestamp)
             raise
         end = time.time()
         self.level -= 1
         if timing:
-            self.print_indent(u"{}: {:.3f}s".format(name, end - start))
+            self.print_indent(u"{}: {:.3f}s".format(name, end - start),
+                              timestamp=timestamp)
 
-    def print_indent(self, message):
-        safe_print(u"{}{}".format(u"    " * self.level, message))
+    def print_indent(self, message, timestamp=False):
+        if not timestamp:
+            safe_print(u"{}{}".format(u"    " * self.level, message))
+        else:
+            safe_print(u"{}{}: {}".format(u"    " * self.level,
+                                          time.strftime('%Y-%m-%d %H:%M:%S'),
+                                          message))
 
 
-def log(func=None, name=None, timing=True):
+def log(func=None, name=None, timing=True, timestamp=False):
     """ Decorator to show a description of the running function
 
     By default, it outputs the first line of the docstring.
     If the docstring is empty, it displays the name of the function.
     Alternatively, if a ``name`` is specified, it will display that only.
 
-    It can be called as ``@log`` or as ``@log(name='abc, timing=True)``.
+    It can be called as ``@log`` or as
+    ``@log(name='abc, timing=True, timestamp=True)``.
 
     """
     # support to be called as @log or as @log(name='')
     if func is None:
-        return functools.partial(log, name=name, timing=timing)
+        return functools.partial(log, name=name, timing=timing,
+                                 timestamp=timestamp)
 
     @functools.wraps(func)
     def decorated(*args, **kwargs):
@@ -73,6 +81,6 @@ def log(func=None, name=None, timing=True):
                 message = func.__doc__.splitlines()[0].strip()
         if message is None:
             message = func.__name__
-        with ctx.log(message, timing=timing):
+        with ctx.log(message, timing=timing, timestamp=timestamp):
             return func(*args, **kwargs)
     return decorated

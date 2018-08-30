@@ -159,9 +159,9 @@ class Context(object):
         self._log.print_indent(message)
 
     @contextmanager
-    def log(self, name, timing=True):
+    def log(self, name, timing=True, timestamp=False):
         if self.options.quiet:
             yield
         else:
-            with self._log.display(name, timing=timing):
+            with self._log.display(name, timing=timing, timestamp=timestamp):
                 yield
