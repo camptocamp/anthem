@@ -10,6 +10,8 @@ Unreleased
 
 **Bugfixes**
 
+- Make ``lyrics.modules.update_translations`` Odoo 11 compatible
+
 **Improvements**
 
 **Documentation**
