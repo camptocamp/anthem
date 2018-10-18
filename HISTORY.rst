@@ -14,6 +14,8 @@ Unreleased
 
 **Documentation**
 
+- Improve API docs
+
 **Build**
 
 0.12.0 (2018-03-19)
