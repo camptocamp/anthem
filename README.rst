@@ -413,3 +413,8 @@ And then you'll need to call it on a migration step:
         - anthem songs.upgrade.upgrade_10_0_1_1_0::main
 
 Boom! Enjoy your new multicompany settings.
+
+That's all, folks!
+==================
+
+Thanks for reading. Happy hacking and enjoy your songwriting skills!
