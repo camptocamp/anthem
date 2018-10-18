@@ -177,12 +177,15 @@ Lyrics
 
 Lyrics are predefined snippets written for the most commonly used cases, like:
 
-* reading (loading) a data file (CSV format is supported at the moment)
-* assigning an XMLID to records
-* upserting a record (essentially searching for the record and updating it with
-  given values, or creating it in case it isn't there yet)
-* uninstalling module(s)
-* pre-defining a set of settings
+* `Loading data`_: read (load) a data file (CSV format is supported at the moment)
+* `Provide XMLIDs for records`_
+* `Upserting a record`_: essentially search for the record and update it with
+  given values, or create it in case it isn't there yet
+* `Uninstalling a module(s)`_
+* `Updating module configuration`_: pre-defining a set of settings for a particular
+  module (or set of modules)
+
+.. _loading-data:
 
 Loading data
 ------------
