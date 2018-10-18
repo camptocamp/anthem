@@ -352,3 +352,61 @@ Here's a brief example of ``sale`` module configuration:
       })
 
 Be advised: settings onchange are not triggered by this function.
+
+Usage within Marabunta
+======================
+
+Anthem and `Marabunta <https://github.com/camptocamp/marabunta>`_ are powerful
+when combined: you can call a set of songs inside Marabunta's migration steps
+using following syntax:
+
+.. code:: yaml
+
+  ...
+  - version: 10.0.1.0.0
+    operations:
+      pre:
+        - anthem songs.upgrade.your_pre_song::main
+      post:
+        - anthem songs.upgrade.your_post_song::main
+
+By using this approach, you possess the power of full-pledged Odoo
+``Environment`` instance initialized on a live database while performing a
+regular upgrade powered by Marabunta.
+
+Let's say that you have to enable multicompany with inter-company transactions
+on a migration to next version, lets say, 10.0.1.1.0. In this case, you'll need
+a song to back this up on a Python side first:
+
+.. code:: python
+
+   # songs.upgrade.upgrade_10_0_1_1_0.py
+   from anthem.lyrics import settings
+
+   [...]
+   @anthem.log
+   def enable_multicompany(ctx):
+       """Set up multicompany."""
+       settings(ctx, 'base.config.settings', {
+           # enable multicompany as it is
+           'group_light_multi_company': True,
+           # enable inter-company transactions
+           'module_inter_company_rules': True,
+       })
+
+    [...]
+    @anthem.log
+    def main(ctx):
+        enable_multicompany(ctx)
+
+And then you'll need to call it on a migration step:
+
+.. code:: yaml
+
+  ...
+  - version: 10.0.1.1.0
+    operations:
+      post:
+        - anthem songs.upgrade.upgrade_10_0_1_1_0::main
+
+Boom! Enjoy your new multicompany settings.
