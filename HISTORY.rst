@@ -14,9 +14,19 @@ Unreleased
 
 **Documentation**
 
+
+**Build**
+
+0.12.1 (2018-11-09)
+-------------------
+
+**Documentation**
+
 - Improve API docs
 
 **Build**
+
+- The lib is now automaticaly published to Pypi by Travis when a tag is added
 
 0.12.0 (2018-03-19)
 -------------------
