@@ -1,11 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import re
-
 from setuptools import setup, find_packages
 
-with open('anthem/__init__.py') as f:
-    version = re.search(r'^__version__\s*=\s*"(.*)"', f.read(), re.M).group(1)
 with open('README.rst') as f:
     readme = f.read()
 with open('HISTORY.rst') as f:
@@ -13,7 +9,7 @@ with open('HISTORY.rst') as f:
 
 setup(
     name='anthem',
-    version=version,
+    use_scm_version=True,
     description='Make your Odoo scripts sing.',
     long_description=readme + '\n\n' + history,
     author='Camptocamp',
@@ -25,6 +21,9 @@ setup(
         'console_scripts': ['anthem = anthem.cli:main']
     },
     install_requires=['future', 'unicodecsv'],
+    setup_requires=[
+        'setuptools_scm',
+    ],
     classifiers=(
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
