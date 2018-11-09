@@ -39,3 +39,14 @@ script:
   - if [ "$LINT" == false ] ; then OPENERP_SERVER=/tmp/test-anthem-config-${ODOOVERSION}.cfg py.test tests ; fi
   - if [ "$LINT" == true ] ; then flake8 anthem tests ; fi
   - if [ "$LINT" == true ] ; then python setup.py check -r -s ; fi
+
+deploy:
+  provider: pypi
+  skip_existing: true
+  user: $PYPI_USER
+  password: $PYPI_PASSWORD
+  distributions: sdist bdist_wheel
+  on:
+    repo: camptocamp/anthem
+    branch: master
+    tags: true
