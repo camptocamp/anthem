@@ -58,6 +58,9 @@ def read_csv(data, dialect='excel', encoding='utf-8', **fmtparams):
 def load_rows(ctx, model, header, rows):
     if isinstance(model, basestring):
         model = ctx.env[model].with_context(tracking_disable=True)
+    else:
+        if 'tracking_disable' not in model.env.context.keys():
+            model = model.with_context(tracking_disable=True)
     result = model.load(header, rows)
     ids = result['ids']
     if not ids:
