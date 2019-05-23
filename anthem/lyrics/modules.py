@@ -18,12 +18,13 @@ def uninstall(ctx, module_list):
         raise AnthemError(u'Cannot uninstall modules. See the logs')
 
 
-def update_translations(ctx, module_list):
+def update_translations(ctx, module_list, overwrite=False):
     """ Update translations from module list"""
-    if not module_list:
+    if not isinstance(module_list, list):
         raise AnthemError(u"You have to provide a list of "
                           "module's name to update the translations")
 
-    for module in module_list:
-        ctx.env['ir.module.module'].with_context(overwrite=True).search(
-            [('name', '=', module)]).update_translations()
+    domain = [('name', 'in', module_list)]
+    mods = ctx.env['ir.module.module'].search(domain)
+    ctx.log_line('Reloading translations for %s' % str(module_list))
+    mods.with_context(overwrite=overwrite).update_translations()
