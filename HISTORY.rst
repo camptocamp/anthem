@@ -14,8 +14,20 @@ Unreleased
 
 **Documentation**
 
+**Build**
+
+
+0.12.2 (2019-06-21)
+-------------------
+
+**Improvements**
+
+- Add 'tracking_disable=True' as default context to load CSVs
+  (avoid creating 'mail.message' records and speed up the import process)
 
 **Build**
+
+- Packaging: build universal wheels
 
 0.12.1 (2018-11-09)
 -------------------
