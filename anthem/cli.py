@@ -10,6 +10,7 @@ import importlib
 import logging
 import os
 import signal
+import string
 
 from contextlib import contextmanager
 
@@ -144,8 +145,13 @@ class Context(object):
         # one which in fact prevents us to stop anthem with Ctrl-c.
         # Restore the default one.
         signal.signal(signal.SIGINT, signal.default_int_handler)
-
-        if odoo.release.version_info[0] > 9:
+        odoo_version = odoo.release.version_info[0]
+        # On saas versions this will be "saas-XX" where XX is the odoo version
+        if not isinstance(odoo_version, int):
+            odoo_version = int(
+                odoo_version.lstrip(string.ascii_letters + '-~')
+            )
+        if odoo_version > 9:
             registry = odoo.modules.registry.Registry(dbname)
         else:
             registry = odoo.modules.registry.RegistryManager.get(dbname)

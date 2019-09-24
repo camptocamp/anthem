@@ -11,6 +11,8 @@ Unreleased
 - BREAKING: Change default `overwrite` value for
    ``lyrics.modules.update_translations`` to False
 
+- Support odoo saas versions
+
 **Bugfixes**
 
 - Make ``lyrics.modules.update_translations`` Odoo >= 11.0 compatible
