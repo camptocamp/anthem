@@ -7,7 +7,10 @@ Unreleased
 ----------
 
 **Features**
- - BREAKING: Change default `overwrite` value for ``lyrics.modules.update_translations`` to False
+
+- BREAKING: Change default `overwrite` value for
+   ``lyrics.modules.update_translations`` to False
+
 **Bugfixes**
 
 - Make ``lyrics.modules.update_translations`` Odoo >= 11.0 compatible
