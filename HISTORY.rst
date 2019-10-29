@@ -8,6 +8,19 @@ Unreleased
 
 **Features**
 
+**Bugfixes**
+
+**Improvements**
+
+**Documentation**
+
+**Build**
+
+0.13.0 (2019-08-29)
+-------------------
+
+**Features**
+
 - BREAKING: Change default `overwrite` value for
    ``lyrics.modules.update_translations`` to False
 
@@ -16,13 +29,6 @@ Unreleased
 **Bugfixes**
 
 - Make ``lyrics.modules.update_translations`` Odoo >= 11.0 compatible
-
-**Improvements**
-
-**Documentation**
-
-**Build**
-
 
 0.12.2 (2019-06-21)
 -------------------
