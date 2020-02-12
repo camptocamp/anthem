@@ -28,7 +28,7 @@ def add_xmlid(ctx, record, xmlid, noupdate=False):
     })
 
 
-def create_or_update(ctx, model, xmlid, values):
+def create_or_update(ctx, model, xmlid, values, noupdate=False):
     """ Create or update a record matching xmlid with values """
     if isinstance(model, basestring):
         model = ctx.env[model]
@@ -38,7 +38,7 @@ def create_or_update(ctx, model, xmlid, values):
         record.update(values)
     else:
         record = model.create(values)
-        add_xmlid(ctx, record, xmlid)
+        add_xmlid(ctx, record, xmlid, noupdate)
     return record
 
 
