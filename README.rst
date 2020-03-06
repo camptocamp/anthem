@@ -316,7 +316,7 @@ Example (given that there are modules ``foo`` and ``bar`` that you want gone):
   @anthem.log
   def uninstall_foo(ctx):
       """Get rid of legacy `foo` and `bar`."""
-      uninstall(['foo', 'bar'])
+      uninstall(ctx,['foo', 'bar'])
 
 Updating translations on module(s)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
