@@ -10,7 +10,10 @@ def uninstall(ctx, module_list):
         raise AnthemError("You have to provide a list of " "module's name to uninstall")
 
     mods = ctx.env["ir.module.module"].search(
-        [("name", "in", module_list), ("state", "!=", "uninstalled")]
+        [
+            ("name", "in", module_list),
+            ("state", "not in", ["uninstalled", "uninstallable"]),
+        ]
     )
     try:
         mods.button_immediate_uninstall()
