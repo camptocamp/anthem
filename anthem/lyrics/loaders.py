@@ -1,13 +1,78 @@
-# -*- coding: utf-8 -*-
 # Copyright 2016-2017 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-
 import unicodecsv as csv
 import os
 from past.builtins import basestring
 
 from ..exceptions import AnthemError
 from . import modules
+from .records import switch_company
+
+
+def load_model_csv(ctx, path):
+    """ Use to load any model
+
+    :param ctx: Anthem context
+    :param path: Absolute or relative path to CSV file.
+
+    Usage::
+
+        @anthem.log
+        def import_res_partner(ctx):
+            load_model_csv(ctx, 'res.partner.csv')
+
+    """
+    model = os.path.splitext(os.path.basename(path))[0]
+    load_csv(ctx, model, path)
+
+
+def load_users_csv(ctx, path):
+    """ Use to load users without sending emails
+
+    :param ctx: Anthem context
+    :param path: Absolute or relative path to CSV file.
+
+    Usage::
+
+        @anthem.log
+        def import_res_users(ctx):
+            load_users_csv(ctx, 'res.users.csv')
+
+    """
+    # make sure we don't send any email
+    model = ctx.env["res.users"].with_context(
+        {"no_reset_password": True, "tracking_disable": True}
+    )
+    load_csv(ctx, model, path)
+
+
+def load_warehouses(ctx, company, path):
+    """ Use to load warehouses in multi-company
+
+    In multi-company mode we must force the company otherwise the sequences that stock
+    module generates automatically will have the wrong company assigned.
+
+    :param ctx: Anthem context
+    :param company: Company record or XML ID
+    :param path: Absolute or relative path to CSV file.
+
+    Usage::
+
+        @anthem.log
+        def import_warehouses(ctx):
+            load_warehouses(ctx, ctx.env.user.company_id, 'stock.warehouse.csv')
+
+    """
+    with switch_company(ctx, company) as ctx:
+        load_model_csv(ctx, path)
+        # TODO: dirty hack here.
+        # We are forced to load the CSV twice because
+        # if you are modifying the existing base warehouse (stock.warehouse0)
+        # and you've changed the `code` (short name)
+        # the changes are not reflected on existing sequences
+        # until you load warehouse data again.
+        # We usually don't have that many WHs so... it's fine :)
+        load_model_csv(ctx, path)
 
 
 def load_csv(ctx, model, path, header=None, header_exclude=None, **fmtparams):
