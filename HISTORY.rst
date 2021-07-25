@@ -10,6 +10,8 @@ Unreleased
 
 **Bugfixes**
 
+* Calling anthem.lyrics.settings.define_settings in 13.0 breaks odoo environment
+
 **Improvements**
 
 **Documentation**
