@@ -1,7 +1,8 @@
 # Copyright 2016-2017 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-import unicodecsv as csv
 import os
+
+import unicodecsv as csv
 from past.builtins import basestring
 
 from ..exceptions import AnthemError
@@ -10,7 +11,7 @@ from .records import switch_company
 
 
 def load_model_csv(ctx, path):
-    """ Use to load any model
+    """Use to load any model
 
     :param ctx: Anthem context
     :param path: Absolute or relative path to CSV file.
@@ -27,7 +28,7 @@ def load_model_csv(ctx, path):
 
 
 def load_users_csv(ctx, path):
-    """ Use to load users without sending emails
+    """Use to load users without sending emails
 
     :param ctx: Anthem context
     :param path: Absolute or relative path to CSV file.
@@ -47,7 +48,7 @@ def load_users_csv(ctx, path):
 
 
 def load_warehouses(ctx, company, path):
-    """ Use to load warehouses in multi-company
+    """Use to load warehouses in multi-company
 
     In multi-company mode we must force the company otherwise the sequences that stock
     module generates automatically will have the wrong company assigned.
@@ -103,18 +104,18 @@ def load_csv(ctx, model, path, header=None, header_exclude=None, **fmtparams):
             path = os.path.join(ctx.options.odoo_data_path, path)
         else:
             raise AnthemError(
-                'Got a relative path. '
-                'Please, provide a value for `ODOO_DATA_PATH` '
-                'in your environment or set `--odoo-data-path` option.'
+                "Got a relative path. "
+                "Please, provide a value for `ODOO_DATA_PATH` "
+                "in your environment or set `--odoo-data-path` option."
             )
 
-    with open(path, 'rb') as data:
-        load_csv_stream(ctx, model, data,
-                        header=header, header_exclude=header_exclude,
-                        **fmtparams)
+    with open(path, "rb") as data:
+        load_csv_stream(
+            ctx, model, data, header=header, header_exclude=header_exclude, **fmtparams
+        )
 
 
-def read_csv(data, dialect='excel', encoding='utf-8', **fmtparams):
+def read_csv(data, dialect="excel", encoding="utf-8", **fmtparams):
     rows = csv.reader(data, encoding=encoding, **fmtparams)
     header = next(rows)
     return header, rows
@@ -124,25 +125,21 @@ def load_rows(ctx, model, header, rows):
     if isinstance(model, basestring):
         model = ctx.env[model].with_context(tracking_disable=True)
     else:
-        if 'tracking_disable' not in model.env.context:
+        if "tracking_disable" not in model.env.context:
             model = model.with_context(tracking_disable=True)
     result = model.load(header, rows)
-    ids = result['ids']
+    ids = result["ids"]
     if not ids:
-        messages = u'\n'.join(
-            u'- %s' % msg for msg in result['messages']
+        messages = u"\n".join(u"- %s" % msg for msg in result["messages"])
+        ctx.log_line(
+            u"Failed to load CSV " u"in '%s'. Details:\n%s" % (model._name, messages)
         )
-        ctx.log_line(u"Failed to load CSV "
-                     u"in '%s'. Details:\n%s" %
-                     (model._name, messages))
-        raise AnthemError(u'Could not import CSV. See the logs')
+        raise AnthemError(u"Could not import CSV. See the logs")
     else:
-        ctx.log_line(u"Imported %d records in '%s'" %
-                     (len(ids), model._name))
+        ctx.log_line(u"Imported %d records in '%s'" % (len(ids), model._name))
 
 
-def load_csv_stream(ctx, model, data,
-                    header=None, header_exclude=None, **fmtparams):
+def load_csv_stream(ctx, model, data, header=None, header_exclude=None, **fmtparams):
     """Load a CSV from a stream.
 
     :param ctx: current anthem context
@@ -174,10 +171,8 @@ def load_csv_stream(ctx, model, data,
             # since odoo import works only w/ reader and not w/ dictreader
             pop_idxs = [_header.index(x) for x in header_exclude]
             rows = []
-            for i, row in enumerate(_rows):
-                rows.append(
-                    [x for j, x in enumerate(row) if j not in pop_idxs]
-                )
+            for _i, row in enumerate(_rows):
+                rows.append([x for j, x in enumerate(row) if j not in pop_idxs])
         else:
             rows = list(_rows)
         if rows:
@@ -185,10 +180,12 @@ def load_csv_stream(ctx, model, data,
 
 
 def update_translations(ctx, module_list):
-    """ Update translations from module list
+    """Update translations from module list
 
     :param module_list: a list of modules
     """
     modules.update_translations(ctx, module_list)
-    ctx.log_line(u'Deprecated: use anthem.lyrics.modules.update_translations'
-                 'instead of anthem.lyrics.loaders.update_translations')
+    ctx.log_line(
+        u"Deprecated: use anthem.lyrics.modules.update_translations"
+        "instead of anthem.lyrics.loaders.update_translations"
+    )
