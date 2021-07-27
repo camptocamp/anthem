@@ -12,19 +12,19 @@ env:
 
 matrix:
   exclude:
-  - python: 3.6
-    env: ODOOVERSION=9.0 LINT=false
-  - python: 3.6
-    env: ODOOVERSION=10.0 LINT=false
-  - python: 2.7
-    env: ODOOVERSION=11.0 LINT=false
-  - python: 2.7
-    env: ODOOVERSION=12.0 LINT=false
-  - python: 2.7
-    env: ODOOVERSION=13.0 LINT=false
+    - python: 3.6
+      env: ODOOVERSION=9.0 LINT=false
+    - python: 3.6
+      env: ODOOVERSION=10.0 LINT=false
+    - python: 2.7
+      env: ODOOVERSION=11.0 LINT=false
+    - python: 2.7
+      env: ODOOVERSION=12.0 LINT=false
+    - python: 2.7
+      env: ODOOVERSION=13.0 LINT=false
   include:
-  - python: 3.6
-    env: LINT=true
+    - python: 3.6
+      env: LINT=true
 
 services:
   - postgresql
@@ -42,7 +42,8 @@ before_script:
   - if [ "$LINT" == true ] ; then pip install flake8 readme_renderer ; fi
 
 script:
-  - if [ "$LINT" == false ] ; then OPENERP_SERVER=/tmp/test-anthem-config-${ODOOVERSION}.cfg py.test tests ; fi
+  - if [ "$LINT" == false ] ; then
+    OPENERP_SERVER=/tmp/test-anthem-config-${ODOOVERSION}.cfg py.test tests ; fi
   - if [ "$LINT" == true ] ; then flake8 anthem tests ; fi
   - if [ "$LINT" == true ] ; then python setup.py check -r -s ; fi
 
