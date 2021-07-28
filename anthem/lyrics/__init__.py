@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Lyrics are isolated pieces of code that you can use and reuse in
 your own songs.
