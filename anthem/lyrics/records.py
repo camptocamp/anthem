@@ -8,12 +8,18 @@ from past.builtins import basestring
 
 def add_xmlid(ctx, record, xmlid, noupdate=False):
     """ Add a XMLID on an existing record """
+    ir_model_data = ctx.env["ir.model.data"]
     try:
-        ref_id, __, __ = ctx.env["ir.model.data"].xmlid_lookup(xmlid)
+        if hasattr(ir_model_data, "xmlid_lookup"):
+            # Odoo version <= 14.0
+            ref_id, __, __ = ir_model_data.xmlid_lookup(xmlid)
+        else:
+            # Odoo version >= 15.0
+            ref_id, __, __ = ir_model_data._xmlid_lookup(xmlid)
     except ValueError:
         pass  # does not exist, we'll create a new one
     else:
-        return ctx.env["ir.model.data"].browse(ref_id)
+        return ir_model_data.browse(ref_id)
     if "." in xmlid:
         module, name = xmlid.split(".")
     else:
