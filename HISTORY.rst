@@ -12,6 +12,8 @@ Unreleased
 
 **Improvements**
 
+- Enable Travis-CI tests for Odoo 14 and Odoo 15
+
 **Documentation**
 
 **Build**
