@@ -37,6 +37,9 @@ def tests_prepare(ctx, version):
         ctx.run("tar xfz odoo.tar.gz")
         ctx.run("rm -f odoo.tar.gz")
     print("Installing odoo, now")
+    # Use the pre-compiled wheel for Psycopg2
+    ctx.run(r"sed -i 's,\(psycopg2\)\([^-]\),\1-binary\2,'"
+            r" odoo-{0}/requirements.txt odoo-{0}/setup.py".format(version))
     ctx.run("pip install -r odoo-{}/requirements.txt -q".format(version))
     ctx.run("pip install -e odoo-{} -q".format(version))
 

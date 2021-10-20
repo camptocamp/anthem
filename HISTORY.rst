@@ -10,8 +10,12 @@ Unreleased
 
 **Bugfixes**
 
+- Pin version of Setuptools < 58
+- Fix environment initialization for Odoo 15
+
 **Improvements**
 
+- Use `psycopg2-binary` wheel
 - Enable Travis-CI tests for Odoo 14 and Odoo 15
 
 **Documentation**
