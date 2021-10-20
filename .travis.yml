@@ -9,6 +9,8 @@ env:
   - ODOOVERSION=11.0 LINT=false
   - ODOOVERSION=12.0 LINT=false
   - ODOOVERSION=13.0 LINT=false
+  - ODOOVERSION=14.0 LINT=false
+  - ODOOVERSION=15.0 LINT=false
 
 matrix:
   exclude:
@@ -22,6 +24,10 @@ matrix:
       env: ODOOVERSION=12.0 LINT=false
     - python: 2.7
       env: ODOOVERSION=13.0 LINT=false
+    - python: 2.7
+      env: ODOOVERSION=14.0 LINT=false
+    - python: 2.7
+      env: ODOOVERSION=15.0 LINT=false
   include:
     - python: 3.6
       env: LINT=true
@@ -36,7 +42,7 @@ addons:
       - python-lxml # because pip installation is slow
 
 before_script:
-  - if [ "$LINT" == false ] ; then pip install invoke pytest ; fi
+  - if [ "$LINT" == false ] ; then pip install invoke pytest "setuptools<58" ; fi
   - if [ "$LINT" == false ] ; then pip install . ; fi
   - if [ "$LINT" == false ] ; then invoke tests.prepare-version "${ODOOVERSION}" ; fi
   - if [ "$LINT" == true ] ; then pip install flake8 readme_renderer ; fi

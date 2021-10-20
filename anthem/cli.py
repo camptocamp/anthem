@@ -156,7 +156,8 @@ class Context(object):
             registry = odoo.modules.registry.RegistryManager.get(dbname)
         cr = registry.cursor()
         uid = odoo.SUPERUSER_ID
-        Environment.reset()
+        if odoo_version < 15:
+            Environment.reset()
         context = Environment(cr, uid, {})["res.users"].context_get()
         return Environment(cr, uid, context)
 
