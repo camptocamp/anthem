@@ -15,7 +15,6 @@ Unreleased
 
 **Improvements**
 
-- Use `psycopg2-binary` wheel
 - Enable Travis-CI tests for Odoo 14 and Odoo 15
 
 **Documentation**
