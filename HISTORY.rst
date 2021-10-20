@@ -10,6 +10,9 @@ Unreleased
 
 **Bugfixes**
 
+- Pin version of Setuptools < 58
+- Fix environment initialization for Odoo 15
+
 **Improvements**
 
 - Enable Travis-CI tests for Odoo 14 and Odoo 15
