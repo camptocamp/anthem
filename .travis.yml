@@ -2,6 +2,7 @@ language: python
 python:
   - 2.7
   - 3.6
+  - 3.7
 
 env:
   - ODOOVERSION=9.0 LINT=false
@@ -16,7 +17,11 @@ matrix:
   exclude:
     - python: 3.6
       env: ODOOVERSION=9.0 LINT=false
+    - python: 3.7
+      env: ODOOVERSION=9.0 LINT=false
     - python: 3.6
+      env: ODOOVERSION=10.0 LINT=false
+    - python: 3.7
       env: ODOOVERSION=10.0 LINT=false
     - python: 2.7
       env: ODOOVERSION=11.0 LINT=false
@@ -28,8 +33,10 @@ matrix:
       env: ODOOVERSION=14.0 LINT=false
     - python: 2.7
       env: ODOOVERSION=15.0 LINT=false
-  include:
     - python: 3.6
+      env: ODOOVERSION=15.0 LINT=false
+  include:
+    - python: 3.7
       env: LINT=true
 
 services:
