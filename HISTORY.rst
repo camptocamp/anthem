@@ -17,6 +17,7 @@ Unreleased
 **Improvements**
 
 - Enable Travis-CI tests for Odoo 14 and Odoo 15
+- Add: nuke_translations to allow to remove already existing translations
 
 **Documentation**
 

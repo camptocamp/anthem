@@ -28,6 +28,7 @@ def update_translations(ctx, module_list, overwrite=False):
         )
     if overwrite:
         ctx.log_line(u"All previous translations will be dropped for requested addons")
+        ctx.nuke_translations(module_list)
     ir_module = ctx.env["ir.module.module"]
     if hasattr(ir_module, "update_translations"):
         # Odoo version <= 10.0
@@ -41,3 +42,12 @@ def update_translations(ctx, module_list, overwrite=False):
     ctx.log_line("Reloading translations for %s" % str(module_list))
     mods.with_context(overwrite=overwrite)
     getattr(mods, method_name)()
+
+
+def nuke_translations(ctx, module_list):
+    """ Remove translations from module list"""
+    if not isinstance(module_list, list):
+        raise AnthemError(
+            u"You have to provide a list of module's name to remove the translations"
+        )
+    ctx.env["ir.translation"].search([("module", "in", module_list)]).unlink()
