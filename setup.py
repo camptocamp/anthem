@@ -7,7 +7,7 @@ with open("HISTORY.rst") as f:
 
 setup(
     name="anthem",
-    use_scm_version=True,
+    version="0.8.0",
     description="Make your Odoo scripts sing.",
     long_description=readme + "\n\n" + history,
     author="Camptocamp",
@@ -17,9 +17,6 @@ setup(
     packages=find_packages(exclude=("tests", "docs")),
     entry_points={"console_scripts": ["anthem = anthem.cli:main"]},
     install_requires=["future", "unicodecsv"],
-    setup_requires=[
-        "setuptools_scm",
-    ],
     classifiers=(
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
