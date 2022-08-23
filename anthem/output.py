@@ -12,7 +12,7 @@ from past.builtins import PY3
 
 
 def safe_print(ustring, errors="replace", **kwargs):
-    """ Safely print a unicode string """
+    """Safely print a unicode string"""
     encoding = sys.stdout.encoding or "utf-8"
     if PY3:
         print(ustring, **kwargs)
@@ -27,29 +27,29 @@ class LogIndent(object):
 
     @contextmanager
     def display(self, name, timing=True, timestamp=False):
-        self.print_indent(u"{}...".format(name), timestamp=timestamp)
+        self.print_indent("{}...".format(name), timestamp=timestamp)
         self.level += 1
         start = time.time()
         try:
             yield
         except Exception:
             self.level -= 1
-            self.print_indent(u"{}: error".format(name), timestamp=timestamp)
+            self.print_indent("{}: error".format(name), timestamp=timestamp)
             raise
         end = time.time()
         self.level -= 1
         if timing:
             self.print_indent(
-                u"{}: {:.3f}s".format(name, end - start), timestamp=timestamp
+                "{}: {:.3f}s".format(name, end - start), timestamp=timestamp
             )
 
     def print_indent(self, message, timestamp=False):
         if not timestamp:
-            safe_print(u"{}{}".format(u"    " * self.level, message))
+            safe_print("{}{}".format("    " * self.level, message))
         else:
             safe_print(
-                u"{}{}: {}".format(
-                    u"    " * self.level, time.strftime("%Y-%m-%d %H:%M:%S"), message
+                "{}{}: {}".format(
+                    "    " * self.level, time.strftime("%Y-%m-%d %H:%M:%S"), message
                 )
             )
 

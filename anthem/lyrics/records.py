@@ -7,7 +7,7 @@ from past.builtins import basestring
 
 
 def add_xmlid(ctx, record, xmlid, noupdate=False):
-    """ Add a XMLID on an existing record """
+    """Add a XMLID on an existing record"""
     ir_model_data = ctx.env["ir.model.data"]
     try:
         if hasattr(ir_model_data, "xmlid_lookup"):
@@ -37,7 +37,7 @@ def add_xmlid(ctx, record, xmlid, noupdate=False):
 
 
 def create_or_update(ctx, model, xmlid, values):
-    """ Create or update a record matching xmlid with values """
+    """Create or update a record matching xmlid with values"""
     if isinstance(model, basestring):
         model = ctx.env[model]
 

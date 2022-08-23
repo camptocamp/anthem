@@ -56,7 +56,7 @@ def test_load_csv_file_model(tmpdir):
 
 
 def test_load_csv_stream_model_string():
-    """ Pass string instead of model to load_csv_stream """
+    """Pass string instead of model to load_csv_stream"""
     csv_stream = BytesIO()
     csv_stream.write(csv_partner)
     csv_stream.seek(0)

@@ -130,13 +130,13 @@ def load_rows(ctx, model, header, rows):
     result = model.load(header, rows)
     ids = result["ids"]
     if not ids:
-        messages = u"\n".join(u"- %s" % msg for msg in result["messages"])
+        messages = "\n".join("- %s" % msg for msg in result["messages"])
         ctx.log_line(
-            u"Failed to load CSV " u"in '%s'. Details:\n%s" % (model._name, messages)
+            "Failed to load CSV " "in '%s'. Details:\n%s" % (model._name, messages)
         )
-        raise AnthemError(u"Could not import CSV. See the logs")
+        raise AnthemError("Could not import CSV. See the logs")
     else:
-        ctx.log_line(u"Imported %d records in '%s'" % (len(ids), model._name))
+        ctx.log_line("Imported %d records in '%s'" % (len(ids), model._name))
 
 
 def load_csv_stream(ctx, model, data, header=None, header_exclude=None, **fmtparams):
@@ -186,6 +186,6 @@ def update_translations(ctx, module_list):
     """
     modules.update_translations(ctx, module_list)
     ctx.log_line(
-        u"Deprecated: use anthem.lyrics.modules.update_translations"
+        "Deprecated: use anthem.lyrics.modules.update_translations"
         "instead of anthem.lyrics.loaders.update_translations"
     )
