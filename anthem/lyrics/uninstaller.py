@@ -5,9 +5,9 @@ from . import modules
 
 
 def uninstall(ctx, module_list):
-    """ uninstall module """
+    """uninstall module"""
     modules.uninstall(ctx, module_list)
     ctx.log_line(
-        u"Deprecated: use anthem.lyrics.modules.uninstall instead of "
+        "Deprecated: use anthem.lyrics.modules.uninstall instead of "
         "anthem.lyrics.uninstaller.uninstall"
     )
