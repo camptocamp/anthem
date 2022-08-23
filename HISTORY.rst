@@ -10,6 +10,7 @@ Unreleased
 
 **Bugfixes**
 
+- Fix Update_translation function and update black version 22.3.0
 - Pin version of Setuptools < 58
 - Fix environment initialization for Odoo 15
 - Fix `add_xmlid` for Odoo 15

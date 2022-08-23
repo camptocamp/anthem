@@ -28,7 +28,7 @@ def update_translations(ctx, module_list, overwrite=False):
         )
     if overwrite:
         ctx.log_line(u"All previous translations will be dropped for requested addons")
-        ctx.nuke_translations(module_list)
+        nuke_translations(ctx, module_list)
     ir_module = ctx.env["ir.module.module"]
     if hasattr(ir_module, "update_translations"):
         # Odoo version <= 10.0
