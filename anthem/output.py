@@ -4,7 +4,6 @@
 from __future__ import print_function
 
 import functools
-import sys
 import time
 from contextlib import contextmanager
 

@@ -4,7 +4,6 @@
 from __future__ import print_function
 
 import os
-from distutils.version import LooseVersion
 
 from invoke import Collection, task
 
@@ -15,16 +14,12 @@ ns.add_collection(tests)
 ODOO_URL = "https://github.com/odoo/odoo/archive/{}.tar.gz"
 
 
-def is_below_odoo_10(version):
-    return LooseVersion(version) < LooseVersion("10.0")
-
-
 def dbname(version):
     return "anthem-test-db-{}".format(version.replace(".", "_"))
 
 
 def assert_version(version):
-    assert version in ("15.0", "14.0", "13.0", "12.0", "11.0", "10.0", "9.0")
+    assert version in ("16.0", "15.0", "14.0", "13.0", "12.0", "11.0")
 
 
 @task
@@ -46,16 +41,9 @@ def tests_createdb(ctx, version):
     assert_version(version)
     db = dbname(version)
     print("Installing database {}".format(db))
-    if is_below_odoo_10(version):
-        ctx.run(
-            "odoo.py -d {} --workers=0 --log-level=critical "
-            "--stop-after-init".format(db)
-        )
-    else:
-        ctx.run(
-            "odoo -d {} --workers=0 --log-level=critical "
-            "--stop-after-init".format(db)
-        )
+    ctx.run(
+        "odoo -d {} --workers=0 --log-level=critical " "--stop-after-init".format(db)
+    )
 
 
 @task
@@ -63,10 +51,8 @@ def tests_dropdb(ctx, version):
     assert_version(version)
     print("Dropping the database")
     try:
-        if is_below_odoo_10(version):
-            import openerp as odoo
-        else:
-            import odoo  # noqa
+        import odoo  # noqa
+
         odoo.tools.config.parse_config(None)
         odoo.service.db.exp_drop(dbname(version))
     except ImportError:
