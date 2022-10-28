@@ -4,21 +4,13 @@
 from __future__ import print_function
 
 import functools
-import sys
 import time
 from contextlib import contextmanager
-
-from past.builtins import PY3
 
 
 def safe_print(ustring, errors="replace", **kwargs):
     """Safely print a unicode string"""
-    encoding = sys.stdout.encoding or "utf-8"
-    if PY3:
-        print(ustring, **kwargs)
-    else:
-        bytestr = ustring.encode(encoding, errors=errors)
-        print(bytestr, **kwargs)
+    print(ustring, **kwargs)
 
 
 class LogIndent(object):

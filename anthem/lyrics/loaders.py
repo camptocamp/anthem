@@ -3,7 +3,6 @@
 import os
 
 import unicodecsv as csv
-from past.builtins import basestring
 
 from ..exceptions import AnthemError
 from . import modules
@@ -122,7 +121,7 @@ def read_csv(data, dialect="excel", encoding="utf-8", **fmtparams):
 
 
 def load_rows(ctx, model, header, rows):
-    if isinstance(model, basestring):
+    if isinstance(model, str):
         model = ctx.env[model].with_context(tracking_disable=True)
     else:
         if "tracking_disable" not in model.env.context:

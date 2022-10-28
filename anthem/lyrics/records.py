@@ -3,8 +3,6 @@
 
 from contextlib import contextmanager
 
-from past.builtins import basestring
-
 
 def add_xmlid(ctx, record, xmlid, noupdate=False):
     """Add a XMLID on an existing record"""
@@ -38,7 +36,7 @@ def add_xmlid(ctx, record, xmlid, noupdate=False):
 
 def create_or_update(ctx, model, xmlid, values):
     """Create or update a record matching xmlid with values"""
-    if isinstance(model, basestring):
+    if isinstance(model, str):
         model = ctx.env[model]
 
     record = ctx.env.ref(xmlid, raise_if_not_found=False)
@@ -52,7 +50,7 @@ def create_or_update(ctx, model, xmlid, values):
 
 def safe_record(ctx, item):
     """Make sure we get a record instance even if we pass an xmlid."""
-    if isinstance(item, basestring):
+    if isinstance(item, str):
         return ctx.env.ref(item)
     return item
 
