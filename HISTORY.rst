@@ -10,6 +10,17 @@ Unreleased
 
 **Bugfixes**
 
+**Improvements**
+
+**Documentation**
+
+**Build**
+
+0.14.0 (2023-05-16)
+-------------------
+
+**Bugfixes**
+
 - Fix Update_translation function and update black version 22.3.0
 - Pin version of Setuptools < 58
 - Fix environment initialization for Odoo 15
@@ -19,10 +30,6 @@ Unreleased
 
 - Enable Travis-CI tests for Odoo 14 and Odoo 15
 - Add: nuke_translations to allow to remove already existing translations
-
-**Documentation**
-
-**Build**
 
 0.13.0 (2019-08-29)
 -------------------
