@@ -1,7 +1,6 @@
 # Copyright 2016 Camptocamp SA
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl-3.0.en.html)
 
-from __future__ import print_function
 
 import argparse
 import code
@@ -89,7 +88,7 @@ def banner():
     return b
 
 
-class Options(object):
+class Options:
     def __init__(
         self, interactive=False, quiet=False, test_mode=False, odoo_data_path=None
     ):
@@ -115,7 +114,7 @@ def run(odoo_args, target, options):
         ctx.env.cr.commit()
 
 
-class Context(object):
+class Context:
     def __init__(self, odoo_args, options):
         self.env = self._build_odoo_env(odoo_args)
         self.options = options

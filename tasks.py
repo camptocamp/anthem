@@ -1,7 +1,6 @@
 # Copyright 2016 Camptocamp SA
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl-3.0.en.html)
 
-from __future__ import print_function
 
 import os
 
@@ -64,7 +63,7 @@ def tests_dropdb(ctx, version):
 def tests_prepare_config(ctx, version, source, target):
     assert_version(version)
     assert source and target
-    with open(source, "rU") as source_file:
+    with open(source) as source_file:
         config_content = source_file.readlines()
 
     for idx, line in enumerate(config_content):
