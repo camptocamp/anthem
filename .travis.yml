@@ -1,6 +1,5 @@
 language: python
 python:
-  - 3.6
   - 3.7
   - 3.10-dev
 
@@ -31,11 +30,11 @@ matrix:
       env: ODOOVERSION=14.0 LINT=false
     - python: 3.10-dev
       env: ODOOVERSION=15.0 LINT=false
-    - python: 3.6
+    - python: 3.7
       env: ODOOVERSION=15.0 LINT=false
     - python: 3.10-dev
       env: ODOOVERSION=16.0 LINT=false
-    - python: 3.6
+    - python: 3.7
       env: ODOOVERSION=16.0 LINT=false
   include:
     - python: 3.7
