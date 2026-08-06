@@ -16,7 +16,7 @@ setup(
     license="LGPLv3+",
     packages=find_packages(exclude=("tests", "docs")),
     entry_points={"console_scripts": ["anthem = anthem.cli:main"]},
-    install_requires=[ "unicodecsv"],
+    install_requires=["unicodecsv", "importlib_metadata; python_version<'3.8'"],
     setup_requires=[
         "setuptools_scm",
     ],
