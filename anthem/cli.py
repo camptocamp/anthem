@@ -136,7 +136,7 @@ class Context:
         odoo.tools.config["xmlrpc"] = False
         if not dbname:
             argparse.ArgumentParser().error(
-                "please provide a database name though Odoo options (either "
+                "please provide a database name through Odoo options (either "
                 "-d or an Odoo configuration file)"
             )
         logging.getLogger(odoo_logger).setLevel(logging.ERROR)

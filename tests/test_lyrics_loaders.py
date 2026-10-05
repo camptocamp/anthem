@@ -24,6 +24,16 @@ csv_partner = (
 )
 
 
+def clear_cache(ctx, model):
+    # clear_cache is necessary to make the models.exists work
+    # after loading csv with models.load (self.env.ref relies on models.exists)
+    if hasattr(ctx.env.registry, "clear_cache"):  # Odoo 17 to 19
+        ctx.env.registry.clear_cache()
+    elif hasattr(ctx.env[model], "clear_caches"):  # Odoo 12 to 16
+        ctx.env[model].clear_caches()
+    # No need to clear cache for Odoo >= 20
+
+
 def test_load_csv_stream_model():
     csv_stream = BytesIO()
     csv_stream.write(csv_partner)
@@ -43,10 +53,7 @@ def test_load_csv_file_model(tmpdir):
     csvfile.write(csv_partner)
     with anthem.cli.Context(None, anthem.cli.Options(test_mode=True)) as ctx:
         load_csv(ctx, ctx.env["res.partner"], csvfile.strpath, delimiter=",")
-        # [>=12.0] clear_cache is necessary to make the models.exists work
-        # after loading csv with models.load (self.env.ref relies on models.exists)
-        if hasattr(odoo, "release") and odoo.release.version_info[0] >= 12:
-            ctx.env["res.partner"].clear_caches()
+        clear_cache(ctx, "res.partner")
         partner1 = ctx.env.ref("__test__.partner1", raise_if_not_found=False)
         assert partner1
         assert partner1.name == "Partner 1"
@@ -62,10 +69,7 @@ def test_load_csv_stream_model_string():
     csv_stream.seek(0)
     with anthem.cli.Context(None, anthem.cli.Options(test_mode=True)) as ctx:
         load_csv_stream(ctx, "res.partner", csv_stream, delimiter=",")
-        # [>=12.0] clear_cache is necessary to make the models.exists work
-        # after loading csv with models.load (self.env.ref relies on models.exists)
-        if hasattr(odoo, "release") and odoo.release.version_info[0] >= 12:
-            ctx.env["res.partner"].clear_caches()
+        clear_cache(ctx, "res.partner")
         partner1 = ctx.env.ref("__test__.partner1", raise_if_not_found=False)
         assert partner1
         assert partner1.name == "Partner 1"
@@ -79,10 +83,7 @@ def test_load_csv_file_model_string(tmpdir):
     csvfile.write(csv_partner)
     with anthem.cli.Context(None, anthem.cli.Options(test_mode=True)) as ctx:
         load_csv(ctx, "res.partner", csvfile.strpath, delimiter=",")
-        # [>=12.0] clear_cache is necessary to make the models.exists work
-        # after loading csv with models.load (self.env.ref relies on models.exists)
-        if hasattr(odoo, "release") and odoo.release.version_info[0] >= 12:
-            ctx.env["res.partner"].clear_caches()
+        clear_cache(ctx, "res.partner")
         partner1 = ctx.env.ref("__test__.partner1", raise_if_not_found=False)
         assert partner1
         assert partner1.name == "Partner 1"

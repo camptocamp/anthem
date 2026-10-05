@@ -10,6 +10,9 @@ Unreleased
 
 **Bugfixes**
 
+- Fix compatibility of ``add_xmlid`` with Odoo 17 to 20
+- Fix tests
+
 **Improvements**
 
 **Documentation**
