@@ -1,0 +1,94 @@
+name: main
+
+on:
+  push:
+    branches:
+      - "master"
+    tags:
+      - "*.*.*"
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.9"
+
+      - name: Install
+        run: pip install flake8 readme_renderer
+
+      - name: Run lint
+        run: flake8 anthem tests
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        odoo-version:
+          - "16.0" # Python 3.7  to 3.12
+          - "17.0" # Python 3.10 to 3.14
+          - "18.0" # Python 3.10 to 3.14
+          - "19.0" # Python 3.10 to 3.14
+          - "20.0" # Python 3.12 to 3.14
+        python-version:
+          - "3.10"
+          - "3.11"
+          - "3.12"
+          - "3.13"
+          - "3.14"
+        exclude:
+          - odoo-version: "16.0"
+            python-version: "3.13"
+          - odoo-version: "16.0"
+            python-version: "3.14"
+          - odoo-version: "20.0"
+            python-version: "3.10"
+          - odoo-version: "20.0"
+            python-version: "3.11"
+        include:
+          - odoo-version: "12.0" # Python 3.5 to 3.8
+            python-version: "3.8"
+          - odoo-version: "13.0" # Python 3.6 to 3.8
+            python-version: "3.8"
+          - odoo-version: "14.0" # Python 3.6 to 3.10, tested with 3.8/3.9/3.10
+            python-version: "3.10"
+          - odoo-version: "15.0" # Python 3.7 to 3.12, tested with 3.8/3.9/3.10/3.12
+            python-version: "3.12"
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Odoo
+        run: |
+          set -x
+          ODOO_VERSION="${{ matrix.odoo-version }}"
+          PYTHON_VERSION="${{ matrix.python-version }}"
+          DEBS="libldap2-dev libsasl2-dev"
+          case "$ODOO_VERSION $PYTHON_VERSION" in
+            "14.0 3.10"|"13.0 3.8"|"12.0 3.8")
+              DEBS="$DEBS libjpeg-dev libxml2-dev libxslt1-dev"
+              ;;
+          esac
+          sudo apt update && sudo apt install -y $DEBS
+          sudo systemctl start postgresql.service
+          pip install invoke pytest "setuptools<=80.10.2"
+          pip install .
+          sudo -u postgres createuser -d $USER
+          invoke tests.prepare-version "$ODOO_VERSION"
+
+      - name: Run tests
+        run: |
+          ODOO_RC=/tmp/test-anthem-config-${{ matrix.odoo-version }}.cfg \
+          FORCE_COLOR=1 \
+          py.test tests

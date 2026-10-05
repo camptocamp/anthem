@@ -93,6 +93,4 @@ ENV/
 
 # testing with odoo
 odoo.tar.gz
-odoo-9.0
-odoo-10.0
-odoo-11.0
+odoo-*.0

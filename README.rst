@@ -2,8 +2,9 @@
 Anthem: make your Odoo scripts sing 🐜🎵
 ========================================
 
-.. image:: https://travis-ci.org/camptocamp/anthem.svg?branch=master
-    :target: https://travis-ci.org/camptocamp/anthem
+.. image:: https://github.com/camptocamp/anthem/actions/workflows/run.yaml/badge.svg
+    :target: https://github.com/camptocamp/anthem/actions/workflows/run.yaml
+
 
 Anthem is a tool to help scripting Odoo instances for automated setup,
 upgrades, testing and more.
@@ -76,25 +77,25 @@ execution. The upper example gives:
 Execute your songs
 ==================
 
-Use the command line ``anthem``. Provided your songs and ``openerp`` are in the
+Use the command line ``anthem``. Provided your songs and ``odoo`` are in the
 ``PYTHONPATH``:
 
 .. code
 
-  anthem songs.install::main -c path/to/openerp.cfg
+  anthem songs.install::main -c path/to/odoo.cfg
 
 Anthem will execute the function ``main`` of the module ``songs.install`` with
 a ``ctx`` initialized with an Odoo ``env``.
 
 Instead of using ``-c`` for the command line, you can export the environment
-variable ``OPENERP_SERVER`` with the path of the configuration file.
+variable ``ODOO_RC`` with the path of the configuration file.
 
 .. code
 
-  export OPENERP_SERVER=path/to/openerp.cfg
+  export ODOO_RC=path/to/odoo.cfg
   anthem songs.install::main
 
-In order to have ``openerp`` in the ``PYTHONPATH``, you might install it as a
+In order to have ``odoo`` in the ``PYTHONPATH``, you might install it as a
 package with ``pip install -e`` or directly modify the ``PYTHONPATH``.
 
 In order to have your ``songs`` in the ``PYTHONPATH``, the better is to make a
@@ -116,59 +117,31 @@ Run the tests
 To run ``anthem``'s tests, it is a good idea to do an *editable* install of it
 in a virtualenv. You must also prepare the environment by installing odoo packages.
 
-Odoo 9.0 (Python 2):
+Odoo 20.0 (example):
 
 .. code
 
   $ git clone https://github.com/camptocamp/anthem.git
   Cloning into 'anthem'...
   $ cd anthem
-  $ virtualenv -p python2 env-9.0
-  $ source env-9.0/bin/activate
+  $ virtualenv -p python3 env-20.0
+  $ source env-20.0/bin/activate
   $ pip install -e .
   $ pip install pytest invoke
-  $ invoke tests.prepare-version 9.0
-  $ OPENERP_SERVER=/tmp/test-anthem-config-9.0.cfg py.test -s tests
-
-Odoo 10.0 (Python 2):
-
-.. code
-
-  $ git clone https://github.com/camptocamp/anthem.git
-  Cloning into 'anthem'...
-  $ cd anthem
-  $ virtualenv -p python2 env-10.0
-  $ source env-10.0/bin/activate
-  $ pip install -e .
-  $ pip install pytest invoke
-  $ invoke tests.prepare-version 10.0
-  $ OPENERP_SERVER=/tmp/test-anthem-config-10.0.cfg py.test -s tests
-
-Odoo 11.0 (Python 3):
-
-.. code
-
-  $ git clone https://github.com/camptocamp/anthem.git
-  Cloning into 'anthem'...
-  $ cd anthem
-  $ virtualenv -p python3 anthem-env-11.0
-  $ source anthem-env-11.0/bin/activate
-  $ pip install -e .
-  $ pip install pytest invoke
-  $ invoke tests.prepare-version 11.0
-  $ OPENERP_SERVER=/tmp/test-anthem-config-11.0.cfg py.test -s tests
+  $ invoke tests.prepare-version 20.0
+  $ ODOO_RC=/tmp/test-anthem-config-20.0.cfg py.test -s tests
 
 If need be, you can drop the test database with (adapt the version):
 
 .. code
 
-  $ invoke tests.dropdb 9.0
+  $ invoke tests.dropdb 20.0
 
 These steps will download the nightly release of Odoo install it as a package
 then install a database, so tests can be run against it (and that's also why it
 is important to use a virtualenv!)
 
-When calling ``pytest``, you have to define the ``OPENERP_SERVER`` environment
+When calling ``pytest``, you have to define the ``ODOO_RC`` environment
 variable with the configuration file for the Odoo database that will be used
 for the tests.
 
