@@ -1,28 +1,20 @@
 # Copyright 2016 Camptocamp SA
-# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl-3.0.en.html)
+# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl-3.0)
 
 from contextlib import contextmanager
 
 
 def add_xmlid(ctx, record, xmlid, noupdate=False):
-    """Add a XMLID on an existing record"""
-    ir_model_data = ctx.env["ir.model.data"]
-    try:
-        if hasattr(ir_model_data, "xmlid_lookup"):
-            # Odoo version <= 14.0
-            ref_id, __, __ = ir_model_data.xmlid_lookup(xmlid)
-        else:
-            # Odoo version >= 15.0
-            ref_id, __, __ = ir_model_data._xmlid_lookup(xmlid)
-    except ValueError:
-        pass  # does not exist, we'll create a new one
-    else:
-        return ir_model_data.browse(ref_id)
-    if "." in xmlid:
-        module, name = xmlid.split(".")
-    else:
-        module = ""
-        name = xmlid
+    """Add an XMLID to an existing record"""
+    # Plain SQL because _xmlid_lookup changed to private method
+    # in Odoo 15, and changed its signature in Odoo 17
+    module, name = xmlid.split(".", 1)
+    query = "SELECT id FROM ir_model_data WHERE module = %s AND name = %s;"
+    ctx.env.cr.execute(query, [module, name])
+    [ref_id] = ctx.env.cr.fetchone() or [None]
+    if ref_id:
+        return ctx.env["ir.model.data"].browse(ref_id)
+    # Does not exist, then create a new one
     return ctx.env["ir.model.data"].create(
         {
             "name": name,

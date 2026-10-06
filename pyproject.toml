@@ -1,0 +1,33 @@
+[build-system]
+requires = [
+    "setuptools>=80 ; python_version >= '3.9'",
+    "setuptools==75.3.4 ; python_version < '3.9'",
+    "setuptools-scm[simple]>=9.2",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "anthem"
+description = "Make your Odoo scripts sing."
+dynamic = ["version"]
+readme = "README.rst"
+authors = [
+  {name = "Camptocamp", email = "info@camptocamp.com"},
+]
+license = {text = "LGPL-3.0-or-later"}
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+dependencies = ["unicodecsv"]
+requires-python = ">= 3.8"
+
+[project.scripts]
+anthem = "anthem.cli:main"
+
+[project.urls]
+homepage = "https://github.com/camptocamp/anthem"
+changelog = "https://github.com/camptocamp/anthem/blob/master/HISTORY.rst"

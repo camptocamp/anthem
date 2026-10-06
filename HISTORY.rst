@@ -8,13 +8,24 @@ Unreleased
 
 **Features**
 
+- Support Odoo 12 to Odoo 20
+- Support Python 3.8 to 3.14
+
 **Bugfixes**
+
+- Fix compatibility of ``add_xmlid`` with Odoo 17 to 20
+- Fix tests
 
 **Improvements**
 
 **Documentation**
 
 **Build**
+
+- Enable CI test on Github
+- Switch to ``pyproject.toml``
+- Update pre-commit hooks
+
 
 0.14.0 (2023-05-16)
 -------------------
@@ -24,26 +35,28 @@ Unreleased
 - Fix Update_translation function and update black version 22.3.0
 - Pin version of Setuptools < 58
 - Fix environment initialization for Odoo 15
-- Fix `add_xmlid` for Odoo 15
+- Fix ``add_xmlid`` for Odoo 15
 
 **Improvements**
 
 - Enable Travis-CI tests for Odoo 14 and Odoo 15
 - Add: nuke_translations to allow to remove already existing translations
 
+
 0.13.0 (2019-08-29)
 -------------------
 
 **Features**
 
-- BREAKING: Change default `overwrite` value for
+- BREAKING: Change default ``overwrite`` value for
    ``lyrics.modules.update_translations`` to False
 
-- Support odoo saas versions
+- Support Odoo SaaS versions
 
 **Bugfixes**
 
 - Make ``lyrics.modules.update_translations`` Odoo >= 11.0 compatible
+
 
 0.12.2 (2019-06-21)
 -------------------
@@ -57,6 +70,7 @@ Unreleased
 
 - Packaging: build universal wheels
 
+
 0.12.1 (2018-11-09)
 -------------------
 
@@ -67,6 +81,7 @@ Unreleased
 **Build**
 
 - The lib is now automaticaly published to Pypi by Travis when a tag is added
+
 
 0.12.0 (2018-03-19)
 -------------------
@@ -81,6 +96,7 @@ Unreleased
 
 - ``lyrics.loaders.update_translations`` is now deprecated as it was a duplicate from
   ``lyrics.modules.update_translations``
+
 
 0.11.0 (2017-12-22)
 -------------------
@@ -106,6 +122,7 @@ Unreleased
 **Build**
 
 - Add 'build-release.sh' script with commands to build and upload the dist files
+
 
 0.9.0 (2017-08-21)
 ------------------
@@ -198,6 +215,7 @@ Unreleased
 - Allow to use Ctrl-c to stop anthem.
 - Set openerp's loglevel to ERROR, its logs clutter anthem's own outputs
 
+
 0.2.0 (2016-07-22)
 ------------------
 
@@ -240,6 +258,7 @@ Unreleased
        Load data: 2.900s
     main: 4.000s
 
+
 0.1.3 (2016-07-07)
 ------------------
 
@@ -247,16 +266,19 @@ Unreleased
 
 - Correct lyric to create or update a record
 
+
 0.1.2 (2016-07-07)
 ------------------
 
 - Add a lyric to create a xmlid
 - Add a lyric to create or update a record
 
+
 0.1.1 (2016-06-23)
 ------------------
 
 - Fixed crash on non-editable install.
+
 
 0.1.0 (2016-06-23)
 ------------------
