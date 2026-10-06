@@ -5,7 +5,6 @@ import os
 import unicodecsv as csv
 
 from ..exceptions import AnthemError
-from . import modules
 from .records import switch_company
 
 
@@ -174,15 +173,3 @@ def load_csv_stream(ctx, model, data, header=None, header_exclude=None, **fmtpar
             rows = list(_rows)
         if rows:
             load_rows(ctx, model, header, rows)
-
-
-def update_translations(ctx, module_list):
-    """Update translations from module list
-
-    :param module_list: a list of modules
-    """
-    modules.update_translations(ctx, module_list)
-    ctx.log_line(
-        "Deprecated: use anthem.lyrics.modules.update_translations"
-        "instead of anthem.lyrics.loaders.update_translations"
-    )
