@@ -8,7 +8,7 @@ def add_xmlid(ctx, record, xmlid, noupdate=False):
     """Add an XMLID to an existing record"""
     # Plain SQL because _xmlid_lookup changed to private method
     # in Odoo 15, and changed its signature in Odoo 17
-    module, name = xmlid.split(".", 1)
+    module, name = xmlid.split(".", 1) if "." in xmlid else ("", xmlid)
     query = "SELECT id FROM ir_model_data WHERE module = %s AND name = %s;"
     ctx.env.cr.execute(query, [module, name])
     [ref_id] = ctx.env.cr.fetchone() or [None]

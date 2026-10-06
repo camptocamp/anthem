@@ -15,6 +15,15 @@ def test_add_xmlid():
         ref2 = add_xmlid(ctx, record, "test.add_xmlid")
         assert ref1 == ref2
 
+        # Advanced tests
+        ref3 = add_xmlid(ctx, record, "legacy_xml_id_no_module")
+        assert ref1.exists() and ref3.exists()
+        assert ref1 != ref3
+        # Older record in 'ir.model.data' is selected: "ORDER BY id ASC"
+        assert record.get_metadata()[0]["xmlid"] == "test.add_xmlid"
+        ref1.unlink()
+        assert record.get_metadata()[0]["xmlid"] == ".legacy_xml_id_no_module"
+
 
 def test_create_or_update():
     with anthem.cli.Context(None, anthem.cli.Options(test_mode=True)) as ctx:
