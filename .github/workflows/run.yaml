@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - "master"
+      - "dev"
     tags:
       - "*.*.*"
   pull_request:
@@ -78,9 +79,18 @@ jobs:
               DEBS="$DEBS libjpeg-dev libxml2-dev libxslt1-dev"
               ;;
           esac
+          case "$ODOO_VERSION" in
+            "15.0"|"16.0")
+              # Odoo needs pkg_resources
+              SETUPTOOLS="setuptools<=80.10.2"
+              ;;
+             *)
+              SETUPTOOLS=""
+              ;;
+          esac
           sudo apt update && sudo apt install -y $DEBS
           sudo systemctl start postgresql.service
-          pip install invoke pytest "setuptools<=80.10.2"
+          pip install invoke pytest "$SETUPTOOLS"
           pip install .
           sudo -u postgres createuser -d $USER
           invoke tests.prepare-version "$ODOO_VERSION"
