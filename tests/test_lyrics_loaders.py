@@ -1,7 +1,7 @@
 # Copyright 2016 Camptocamp SA
-# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl-3.0.en.html)
+# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl-3.0)
 
-from io import BytesIO
+import io
 
 import pytest
 
@@ -10,9 +10,9 @@ from anthem.exceptions import AnthemError
 from anthem.lyrics.loaders import load_csv, load_csv_stream
 
 csv_partner = (
-    b"id,name,street,city\n"
-    b"__test__.partner1,Partner 1,Street 1,City 1\n"
-    b"__test__.partner2,Partner 2,Street 2,City 2\n"
+    "id,name,street,city\n"
+    "__test__.partner1,Partner 1,Street 1,City 1\n"
+    "__test__.partner2,Partner 2,Street 2,City 2\n"
 )
 
 
@@ -27,7 +27,7 @@ def clear_cache(ctx, model):
 
 
 def test_load_csv_stream_model():
-    csv_stream = BytesIO()
+    csv_stream = io.StringIO()
     csv_stream.write(csv_partner)
     csv_stream.seek(0)
     with anthem.cli.Context(None, anthem.cli.Options(test_mode=True)) as ctx:
@@ -56,7 +56,7 @@ def test_load_csv_file_model(tmpdir):
 
 def test_load_csv_stream_model_string():
     """Pass string instead of model to load_csv_stream"""
-    csv_stream = BytesIO()
+    csv_stream = io.StringIO()
     csv_stream.write(csv_partner)
     csv_stream.seek(0)
     with anthem.cli.Context(None, anthem.cli.Options(test_mode=True)) as ctx:
@@ -85,10 +85,8 @@ def test_load_csv_file_model_string(tmpdir):
 
 
 def test_load_erroneous_csv():
-    err_csv = (
-        b"id,name,category_id/id\n" b"__test__.partner_fail,Test, xmlid_not_found\n"
-    )
-    csv_stream = BytesIO()
+    err_csv = "id,name,category_id/id\n__test__.partner_fail,Test, xmlid_not_found\n"
+    csv_stream = io.StringIO()
     csv_stream.write(err_csv)
     csv_stream.seek(0)
     with anthem.cli.Context(None, anthem.cli.Options(test_mode=True)) as ctx:
