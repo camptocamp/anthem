@@ -19,7 +19,7 @@ def dbname(version):
 
 
 def assert_version(version):
-    assert version in {f"{ver}.0" for ver in range(11, 21)}
+    assert version in {f"{ver}.0" for ver in range(12, 21)}
 
 
 @task

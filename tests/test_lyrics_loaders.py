@@ -5,14 +5,6 @@ from io import BytesIO
 
 import pytest
 
-try:
-    import odoo
-
-except ImportError:
-    # Odoo < 10.0
-    import openerp as odoo  # noqa
-
-
 import anthem.cli
 from anthem.exceptions import AnthemError
 from anthem.lyrics.loaders import load_csv, load_csv_stream

@@ -11,21 +11,11 @@ import signal
 import string
 from contextlib import contextmanager
 
+import odoo
+import odoo.service
+from odoo.api import Environment
+
 from anthem import __version__ as anthem_version
-
-try:
-    import odoo
-    import odoo.service
-    from odoo.api import Environment
-
-    odoo_logger = "odoo"
-except ImportError:
-    # Odoo < 10.0
-    import openerp as odoo  # noqa
-    from openerp.api import Environment  # noqa
-
-    odoo_logger = "openerp"
-
 
 from .output import LogIndent
 
@@ -139,7 +129,7 @@ class Context:
                 "please provide a database name through Odoo options (either "
                 "-d or an Odoo configuration file)"
             )
-        logging.getLogger(odoo_logger).setLevel(logging.ERROR)
+        logging.getLogger("odoo").setLevel(logging.ERROR)
         odoo.service.server.start(preload=[], stop=True)
 
         # odoo.service.server.start() modifies the SIGINT signal by its own

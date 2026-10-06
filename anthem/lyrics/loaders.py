@@ -129,13 +129,11 @@ def load_rows(ctx, model, header, rows):
     result = model.load(header, rows)
     ids = result["ids"]
     if not ids:
-        messages = "\n".join("- %s" % msg for msg in result["messages"])
-        ctx.log_line(
-            "Failed to load CSV " "in '%s'. Details:\n%s" % (model._name, messages)
-        )
+        messages = "\n".join(f"- {msg}" for msg in result["messages"])
+        ctx.log_line(f"Failed to load CSV in '{model._name}'. Details:\n{messages}")
         raise AnthemError("Could not import CSV. See the logs")
     else:
-        ctx.log_line("Imported %d records in '%s'" % (len(ids), model._name))
+        ctx.log_line(f"Imported {len(ids)} records in '{model._name}'")
 
 
 def load_csv_stream(ctx, model, data, header=None, header_exclude=None, **fmtparams):

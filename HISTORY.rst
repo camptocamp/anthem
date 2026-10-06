@@ -8,6 +8,9 @@ Unreleased
 
 **Features**
 
+- Support Odoo 12 to Odoo 20
+- Support Python 3.8 to 3.14
+
 **Bugfixes**
 
 - Fix compatibility of ``add_xmlid`` with Odoo 17 to 20
@@ -20,6 +23,8 @@ Unreleased
 **Build**
 
 - Enable CI test on Github
+- Switch to ``pyproject.toml``
+- Update pre-commit hooks
 
 
 0.14.0 (2023-05-16)
@@ -30,7 +35,7 @@ Unreleased
 - Fix Update_translation function and update black version 22.3.0
 - Pin version of Setuptools < 58
 - Fix environment initialization for Odoo 15
-- Fix `add_xmlid` for Odoo 15
+- Fix ``add_xmlid`` for Odoo 15
 
 **Improvements**
 
@@ -43,10 +48,10 @@ Unreleased
 
 **Features**
 
-- BREAKING: Change default `overwrite` value for
+- BREAKING: Change default ``overwrite`` value for
    ``lyrics.modules.update_translations`` to False
 
-- Support odoo saas versions
+- Support Odoo SaaS versions
 
 **Bugfixes**
 

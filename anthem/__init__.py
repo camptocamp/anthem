@@ -1,14 +1,7 @@
 # Copyright 2016 Camptocamp SA
 # Copyright 2026 XCG SAS
-# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl-3.0.en.html)
-try:
-    # python 3.8+
-    from importlib.metadata import PackageNotFoundError, distribution
-except ModuleNotFoundError:
-    from importlib_metadata import (  # type: ignore[import,no-redef,assignment]
-        PackageNotFoundError,
-        distribution,
-    )
+# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl-3.0)
+from importlib.metadata import PackageNotFoundError, distribution
 
 try:
     __version__ = distribution("anthem").version
