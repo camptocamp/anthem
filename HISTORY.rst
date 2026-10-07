@@ -8,6 +8,18 @@ Unreleased
 
 **Features**
 
+**Bugfixes**
+
+**Documentation**
+
+**Build**
+
+
+0.15.0 (2026-10-07)
+-------------------
+
+**Features**
+
 - Support Odoo 12 to Odoo 20
 - Support Python 3.8 to 3.14
 
@@ -15,10 +27,6 @@ Unreleased
 
 - Fix compatibility of ``add_xmlid`` with Odoo 17 to 20
 - Fix tests
-
-**Improvements**
-
-**Documentation**
 
 **Build**
 
