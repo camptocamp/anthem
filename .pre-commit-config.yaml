@@ -32,7 +32,7 @@ repos:
         name: prettier (with plugin-xml)
         additional_dependencies:
           - "prettier@2.8.8"
-          - "@prettier/plugin-xml@3.4.1"
+          - "@prettier/plugin-xml@2.2.0"
         args:
           - --plugin=@prettier/plugin-xml
         files: \.(css|htm|html|js|json|jsx|less|md|scss|toml|ts|xml|yaml|yml)$
